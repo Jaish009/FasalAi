@@ -75,17 +75,17 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
         <div>
-          <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#1b2d1e", margin: 0 }}>
+          <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#2b2e1e", margin: 0 }}>
             🌾 {t("My Crops", "मेरी फसलें")}
           </h2>
-          <p style={{ fontSize: "0.82rem", color: "#4a6741", margin: "0.3rem 0 0" }}>
+          <p style={{ fontSize: "0.82rem", color: "#666b4f", margin: "0.3rem 0 0" }}>
             {t("Track prices for your crops", "अपनी फसलों के भाव ट्रैक करें")}
           </p>
         </div>
         <button
           onClick={() => setShowModal(true)}
           style={{
-            background: "#2d6a4f", color: "white",
+            background: "#556b2f", color: "white",
             border: "none", borderRadius: "100px",
             padding: "0.6rem 1.3rem", cursor: "pointer",
             fontSize: "0.85rem", fontWeight: 600,
@@ -118,10 +118,10 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.8rem" }}>
                 <div>
-                  <div style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#4a6741" }}>
+                  <div style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#666b4f" }}>
                     {CATEGORY_ICONS[uc.crop.category]} {uc.crop.category}
                   </div>
-                  <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "#1b2d1e", marginTop: "0.2rem" }}>
+                  <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "#2b2e1e", marginTop: "0.2rem" }}>
                     {t(uc.crop.name, uc.crop.nameHindi)}
                   </div>
                 </div>
@@ -131,19 +131,19 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
                 >✕</button>
               </div>
 
-              <div style={{ fontSize: "0.78rem", color: "#4a6741", marginBottom: "0.8rem" }}>
+              <div style={{ fontSize: "0.78rem", color: "#666b4f", marginBottom: "0.8rem" }}>
                 📍 {uc.mandi ? t(uc.mandi.name, uc.mandi.nameHindi) : t("Select mandi", "मंडी चुनें")}
               </div>
 
-              <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.7rem", fontWeight: 800, color: "#2d6a4f" }}>
+              <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.7rem", fontWeight: 800, color: "#556b2f" }}>
                 ₹{priceData.price.toLocaleString("en-IN")}
-                <span style={{ fontSize: "0.7rem", fontWeight: 400, color: "#4a6741" }}>/q</span>
+                <span style={{ fontSize: "0.7rem", fontWeight: 400, color: "#666b4f" }}>/q</span>
               </div>
 
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: "0.3rem",
                 marginTop: "0.4rem", fontSize: "0.78rem", fontWeight: 600,
-                color: priceData.change >= 0 ? "#2d6a4f" : "#e63946",
+                color: priceData.change >= 0 ? "#556b2f" : "#e63946",
               }}>
                 {priceData.change >= 0 ? "▲" : "▼"} {Math.abs(priceData.change)}% {t("today", "आज")}
               </div>
@@ -153,7 +153,7 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
                 <polyline
                   points={`0,${28 - i * 2} 20,${24 - i} 40,${20 + i} 60,${16 - i * 2} 80,${12 + i} 100,${10 - i} 120,${priceData.change >= 0 ? 6 : 20}`}
                   fill="none"
-                  stroke={priceData.change >= 0 ? "#2d6a4f" : "#e63946"}
+                  stroke={priceData.change >= 0 ? "#556b2f" : "#e63946"}
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
@@ -176,11 +176,11 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
             alignItems: "center",
             justifyContent: "center",
             gap: "0.5rem",
-            color: "#4a6741",
+            color: "#666b4f",
             transition: "all 0.2s",
             minHeight: "180px",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#2d6a4f")}
+          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#556b2f")}
           onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(45,106,79,0.2)")}
         >
           <div style={{ fontSize: "2rem" }}>+</div>
@@ -196,10 +196,10 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
         >
           <div style={{ background: "white", borderRadius: "20px", padding: "2rem", width: "100%", maxWidth: "480px", boxShadow: "0 24px 64px rgba(0,0,0,0.2)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-              <h3 style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, color: "#1b2d1e", margin: 0, fontSize: "1.2rem" }}>
+              <h3 style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, color: "#2b2e1e", margin: 0, fontSize: "1.2rem" }}>
                 🌾 {t("Add a Crop", "फसल जोड़ें")}
               </h3>
-              <button onClick={() => setShowModal(false)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#4a6741" }}>✕</button>
+              <button onClick={() => setShowModal(false)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666b4f" }}>✕</button>
             </div>
 
             {/* Search */}
@@ -212,7 +212,7 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
                 width: "100%", padding: "0.7rem 1rem",
                 borderRadius: "10px", border: "1px solid rgba(45,106,79,0.2)",
                 fontSize: "0.9rem", marginBottom: "1rem",
-                outline: "none", color: "#1b2d1e",
+                outline: "none", color: "#2b2e1e",
               }}
             />
 
@@ -225,7 +225,7 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
                   style={{
                     width: "100%", display: "flex", alignItems: "center", gap: "0.8rem",
                     padding: "0.7rem", borderRadius: "10px",
-                    border: selectedCropId === crop.id ? "2px solid #2d6a4f" : "1px solid rgba(45,106,79,0.1)",
+                    border: selectedCropId === crop.id ? "2px solid #556b2f" : "1px solid rgba(45,106,79,0.1)",
                     background: selectedCropId === crop.id ? "rgba(45,106,79,0.06)" : "transparent",
                     cursor: "pointer", marginBottom: "0.3rem", textAlign: "left",
                     transition: "all 0.15s",
@@ -233,8 +233,8 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
                 >
                   <span style={{ fontSize: "1.2rem" }}>{CATEGORY_ICONS[crop.category]}</span>
                   <div>
-                    <div style={{ fontWeight: 600, color: "#1b2d1e", fontSize: "0.9rem" }}>{crop.name}</div>
-                    <div style={{ fontSize: "0.78rem", color: "#4a6741" }}>{crop.nameHindi} · {crop.category}</div>
+                    <div style={{ fontWeight: 600, color: "#2b2e1e", fontSize: "0.9rem" }}>{crop.name}</div>
+                    <div style={{ fontSize: "0.78rem", color: "#666b4f" }}>{crop.nameHindi} · {crop.category}</div>
                   </div>
                 </button>
               ))}
@@ -242,13 +242,13 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
 
             {/* Mandi selector */}
             <div style={{ marginBottom: "1rem" }}>
-              <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "#4a6741", display: "block", marginBottom: "0.4rem" }}>
+              <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "#666b4f", display: "block", marginBottom: "0.4rem" }}>
                 {t("Select Mandi (optional)", "मंडी चुनें (वैकल्पिक)")}
               </label>
               <select
                 value={selectedMandiId}
                 onChange={(e) => setSelectedMandiId(e.target.value)}
-                style={{ width: "100%", padding: "0.7rem 1rem", borderRadius: "10px", border: "1px solid rgba(45,106,79,0.2)", fontSize: "0.9rem", color: "#1b2d1e" }}
+                style={{ width: "100%", padding: "0.7rem 1rem", borderRadius: "10px", border: "1px solid rgba(45,106,79,0.2)", fontSize: "0.9rem", color: "#2b2e1e" }}
               >
                 <option value="">{t("Any nearest mandi", "कोई भी नजदीकी मंडी")}</option>
                 {allMandis.map((m) => (
@@ -261,7 +261,7 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
               onClick={handleAddCrop}
               disabled={!selectedCropId || loading}
               style={{
-                width: "100%", background: !selectedCropId ? "#ccc" : "#2d6a4f",
+                width: "100%", background: !selectedCropId ? "#ccc" : "#556b2f",
                 color: "white", border: "none", borderRadius: "100px",
                 padding: "0.85rem", fontSize: "1rem", fontWeight: 600,
                 cursor: !selectedCropId ? "not-allowed" : "pointer",

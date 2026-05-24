@@ -72,7 +72,7 @@ export default function DashboardClient({ user, latestPrices, allCrops, allMandi
                 border: "none",
                 cursor: "pointer",
                 fontSize: "1.3rem",
-                color: "var(--green, #2d6a4f)",
+                color: "var(--green, #556b2f)",
               }}
               className="mobile-menu-btn"
             >
@@ -84,13 +84,13 @@ export default function DashboardClient({ user, latestPrices, allCrops, allMandi
                   fontFamily: "Syne, sans-serif",
                   fontSize: "1.1rem",
                   fontWeight: 700,
-                  color: "#1b2d1e",
+                  color: "#2b2e1e",
                   margin: 0,
                 }}
               >
                 {t(`Good morning, ${user.name.split(" ")[0]} 👋`, `नमस्ते, ${user.name.split(" ")[0]} 👋`)}
               </h1>
-              <p style={{ fontSize: "0.78rem", color: "#4a6741", margin: 0 }}>
+              <p style={{ fontSize: "0.78rem", color: "#666b4f", margin: 0 }}>
                 {t("Track prices, predict markets, sell smarter", "भाव ट्रैक करें, बाजार समझें, सही दाम पाएं")}
               </p>
             </div>
@@ -118,8 +118,8 @@ export default function DashboardClient({ user, latestPrices, allCrops, allMandi
                     fontSize: "0.78rem",
                     fontWeight: 600,
                     transition: "all 0.2s",
-                    background: lang === l ? "#2d6a4f" : "transparent",
-                    color: lang === l ? "white" : "#4a6741",
+                    background: lang === l ? "#556b2f" : "transparent",
+                    color: lang === l ? "white" : "#666b4f",
                   }}
                 >
                   {l === "en" ? "EN" : "हि"}

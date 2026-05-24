@@ -4,15 +4,15 @@
 @theme {
   --color-cream: #fefae0;
   --color-cream-dark: #f5f0d8;
-  --color-forest: #1b2d1e;
-  --color-green: #2d6a4f;
-  --color-green-light: #40916c;
-  --color-green-bright: #52b788;
-  --color-green-pale: #b7e4c7;
+  --color-forest: #2b2e1e;
+  --color-green: #556b2f;
+  --color-green-light: #6b8e23;
+  --color-green-bright: #8fbc8f;
+  --color-green-pale: #d2e0b8;
   --color-gold: #f4a261;
   --color-gold-dark: #e76f51;
   --color-soil: #6b4226;
-  --color-muted: #4a6741;
+  --color-muted: #666b4f;
 
   --font-sans: var(--font-dm-sans), "DM Sans", sans-serif;
   --font-display: var(--font-syne), "Syne", sans-serif;
@@ -31,9 +31,9 @@ body {
   /* Premium Light Mesh Gradient Background */
   background-color: #fdfbf7;
   background-image: 
-    radial-gradient(at 0% 0%, hsla(148,40%,90%,1) 0px, transparent 50%),
+    radial-gradient(at 0% 0%, hsla(80,30%,90%,1) 0px, transparent 50%),
     radial-gradient(at 100% 0%, hsla(43,60%,92%,1) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, hsla(148,30%,92%,1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(80,20%,92%,1) 0px, transparent 50%),
     radial-gradient(at 0% 100%, hsla(43,40%,94%,1) 0px, transparent 50%);
   background-attachment: fixed;
   color: var(--color-forest);

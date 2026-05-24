@@ -29,10 +29,10 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
   return (
     <div style={{ maxWidth: "100%" }}>
       <div style={{ marginBottom: "1.5rem" }}>
-        <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#1b2d1e", margin: "0 0 0.3rem" }}>
+        <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#2b2e1e", margin: "0 0 0.3rem" }}>
           🏪 {t("Mandi Finder", "मंडी खोजें")}
         </h2>
-        <p style={{ fontSize: "0.82rem", color: "#4a6741", margin: 0 }}>
+        <p style={{ fontSize: "0.82rem", color: "#666b4f", margin: 0 }}>
           {t("Find the best mandi near you", "अपने पास की बेहतरीन मंडी खोजें")}
         </p>
       </div>
@@ -42,11 +42,11 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
         <input
           type="text" placeholder={t("Search mandi or district...", "मंडी या जिला खोजें...")}
           value={search} onChange={(e) => setSearch(e.target.value)}
-          style={{ flex: 1, padding: "0.7rem 1rem", borderRadius: "12px", border: "1px solid rgba(45,106,79,0.2)", fontSize: "0.9rem", outline: "none", color: "#1b2d1e" }}
+          style={{ flex: 1, padding: "0.7rem 1rem", borderRadius: "12px", border: "1px solid rgba(45,106,79,0.2)", fontSize: "0.9rem", outline: "none", color: "#2b2e1e" }}
         />
         <button
           onClick={() => navigator.geolocation?.getCurrentPosition(() => {})}
-          style={{ padding: "0.7rem 1.2rem", borderRadius: "12px", border: "1px solid rgba(45,106,79,0.2)", background: "white", cursor: "pointer", fontSize: "0.85rem", color: "#2d6a4f", fontWeight: 600, whiteSpace: "nowrap" }}
+          style={{ padding: "0.7rem 1.2rem", borderRadius: "12px", border: "1px solid rgba(45,106,79,0.2)", background: "white", cursor: "pointer", fontSize: "0.85rem", color: "#556b2f", fontWeight: 600, whiteSpace: "nowrap" }}
         >
           📍 {t("Near Me", "मेरे पास")}
         </button>
@@ -58,28 +58,28 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
           <div key={mandi.id} className="premium-card" style={{ padding: "1.3rem" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.8rem" }}>
               <div>
-                <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "1rem", color: "#1b2d1e" }}>
+                <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "1rem", color: "#2b2e1e" }}>
                   {t(mandi.name, mandi.nameHindi)}
                 </div>
-                <div style={{ fontSize: "0.78rem", color: "#4a6741", marginTop: "0.2rem" }}>
+                <div style={{ fontSize: "0.78rem", color: "#666b4f", marginTop: "0.2rem" }}>
                   📍 {mandi.district}, {mandi.state}
                 </div>
               </div>
               <div style={{
                 background: "rgba(45,106,79,0.1)", padding: "0.3rem 0.6rem",
-                borderRadius: "8px", fontSize: "0.78rem", fontWeight: 700, color: "#2d6a4f",
+                borderRadius: "8px", fontSize: "0.78rem", fontWeight: 700, color: "#556b2f",
               }}>
                 ⭐ {mandi.rating}
               </div>
             </div>
 
-            <div style={{ fontSize: "0.78rem", color: "#4a6741", marginBottom: "0.8rem" }}>
+            <div style={{ fontSize: "0.78rem", color: "#666b4f", marginBottom: "0.8rem" }}>
               🕐 {mandi.timings}
             </div>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem" }}>
               {mandi.facilities.map((f: string) => (
-                <span key={f} style={{ padding: "0.15rem 0.5rem", borderRadius: "100px", background: "rgba(45,106,79,0.07)", fontSize: "0.7rem", color: "#2d6a4f", fontWeight: 500 }}>
+                <span key={f} style={{ padding: "0.15rem 0.5rem", borderRadius: "100px", background: "rgba(45,106,79,0.07)", fontSize: "0.7rem", color: "#556b2f", fontWeight: 500 }}>
                   {f}
                 </span>
               ))}
@@ -88,11 +88,11 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
             <button style={{
               width: "100%", marginTop: "1rem", padding: "0.55rem",
               borderRadius: "10px", border: "1px solid rgba(45,106,79,0.3)",
-              background: "transparent", color: "#2d6a4f", fontSize: "0.82rem",
+              background: "transparent", color: "#556b2f", fontSize: "0.82rem",
               fontWeight: 600, cursor: "pointer", transition: "all 0.2s",
             }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#2d6a4f"; (e.currentTarget as HTMLElement).style.color = "white"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = "#2d6a4f"; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#556b2f"; (e.currentTarget as HTMLElement).style.color = "white"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = "#556b2f"; }}
             >
               🗺 {t("Get Directions", "दिशा पाएं")}
             </button>

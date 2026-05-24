@@ -57,7 +57,7 @@ export default function Sidebar({ activeTab, setActiveTab, lang, open, onClose }
             fontFamily: "Syne, sans-serif",
             fontSize: "1.4rem",
             fontWeight: 800,
-            color: "#2d6a4f",
+            color: "#556b2f",
             marginBottom: "2rem",
             paddingLeft: "0.5rem",
             display: "flex",
@@ -76,7 +76,7 @@ export default function Sidebar({ activeTab, setActiveTab, lang, open, onClose }
               fontWeight: 700,
               textTransform: "uppercase",
               letterSpacing: "0.08em",
-              color: "#4a6741",
+              color: "#666b4f",
               padding: "0 0.5rem",
               marginBottom: "0.5rem",
             }}
@@ -101,8 +101,8 @@ export default function Sidebar({ activeTab, setActiveTab, lang, open, onClose }
                 marginBottom: "0.2rem",
                 transition: "all 0.2s",
                 textAlign: "left",
-                background: activeTab === item.id ? "#2d6a4f" : "transparent",
-                color: activeTab === item.id ? "white" : "#4a6741",
+                background: activeTab === item.id ? "#556b2f" : "transparent",
+                color: activeTab === item.id ? "white" : "#666b4f",
               }}
             >
               <span>{item.icon}</span>
@@ -117,13 +117,13 @@ export default function Sidebar({ activeTab, setActiveTab, lang, open, onClose }
             borderTop: "1px solid rgba(45,106,79,0.1)",
             paddingTop: "1rem",
             fontSize: "0.75rem",
-            color: "#4a6741",
+            color: "#666b4f",
             textAlign: "center",
           }}
         >
           <div style={{ fontSize: "1.2rem", marginBottom: "0.3rem" }}>🌾</div>
           <div style={{ fontWeight: 600 }}>FasalAI v1.0</div>
-          <div style={{ fontSize: "0.7rem", marginTop: "0.2rem", color: "#4a6741" }}>
+          <div style={{ fontSize: "0.7rem", marginTop: "0.2rem", color: "#666b4f" }}>
             {t("Mandi Intelligence", "मंडी बुद्धिमत्ता")}
           </div>
         </div>

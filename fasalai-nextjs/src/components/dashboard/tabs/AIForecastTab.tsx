@@ -32,10 +32,10 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
   return (
     <div style={{ maxWidth: "100%" }}>
       <div style={{ marginBottom: "1.5rem" }}>
-        <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#1b2d1e", margin: "0 0 0.3rem" }}>
+        <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#2b2e1e", margin: "0 0 0.3rem" }}>
           🤖 {t("AI Price Forecast", "AI मूल्य भविष्यवाणी")}
         </h2>
-        <p style={{ fontSize: "0.82rem", color: "#4a6741", margin: 0 }}>
+        <p style={{ fontSize: "0.82rem", color: "#666b4f", margin: 0 }}>
           {t("Prophet ML model predicts prices with 94% accuracy", "Prophet ML मॉडल 94% सटीकता से भाव बताता है")}
         </p>
       </div>
@@ -48,9 +48,9 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
             onClick={() => setSelected(p)}
             style={{
               padding: "0.5rem 1rem", borderRadius: "100px", cursor: "pointer",
-              border: selected.crop === p.crop ? "2px solid #2d6a4f" : "1px solid rgba(45,106,79,0.2)",
-              background: selected.crop === p.crop ? "#2d6a4f" : "white",
-              color: selected.crop === p.crop ? "white" : "#4a6741",
+              border: selected.crop === p.crop ? "2px solid #556b2f" : "1px solid rgba(45,106,79,0.2)",
+              background: selected.crop === p.crop ? "#556b2f" : "white",
+              color: selected.crop === p.crop ? "white" : "#666b4f",
               fontSize: "0.85rem", fontWeight: 600, transition: "all 0.2s",
               display: "flex", alignItems: "center", gap: "0.4rem",
             }}
@@ -62,7 +62,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
 
       {/* Main Forecast Card */}
       <div style={{
-        background: "#2d6a4f", borderRadius: "20px", padding: "2rem",
+        background: "#556b2f", borderRadius: "20px", padding: "2rem",
         marginBottom: "1.5rem", color: "white", position: "relative", overflow: "hidden",
       }}>
         <div style={{ position: "absolute", right: "-1rem", top: "-1rem", fontSize: "8rem", opacity: 0.06 }}>
@@ -83,7 +83,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
             <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: "0.4rem" }}>
               {t(`${horizon}-Day Prediction`, `${horizon} दिन का अनुमान`)}
             </div>
-            <div style={{ fontFamily: "Syne, sans-serif", fontSize: "2rem", fontWeight: 800, color: "#b7e4c7" }}>
+            <div style={{ fontFamily: "Syne, sans-serif", fontSize: "2rem", fontWeight: 800, color: "#d2e0b8" }}>
               ₹{targetPrice.toLocaleString("en-IN")}
             </div>
             <div style={{ fontSize: "0.78rem", color: isRising ? "#a8e6cf" : "#ffb3b3", fontWeight: 600, marginTop: "0.2rem" }}>
@@ -98,7 +98,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
               {selected.confidence}%
             </div>
             <div style={{ height: "6px", background: "rgba(255,255,255,0.2)", borderRadius: "3px", marginTop: "0.8rem", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: `${selected.confidence}%`, background: "#b7e4c7", borderRadius: "3px", transition: "width 0.5s" }} />
+              <div style={{ height: "100%", width: `${selected.confidence}%`, background: "#d2e0b8", borderRadius: "3px", transition: "width 0.5s" }} />
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
       {/* Horizon Toggle + Chart */}
       <div className="premium-card" style={{ padding: "1.5rem", marginBottom: "1.5rem" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.2rem" }}>
-          <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "0.95rem", fontWeight: 700, color: "#1b2d1e", margin: 0 }}>
+          <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "0.95rem", fontWeight: 700, color: "#2b2e1e", margin: 0 }}>
             📈 {t("Price Forecast Chart", "मूल्य अनुमान चार्ट")}
           </h3>
           <div style={{ display: "flex", background: "rgba(45,106,79,0.08)", borderRadius: "100px", padding: "3px" }}>
@@ -130,8 +130,8 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
               <button key={h} onClick={() => setHorizon(h)} style={{
                 padding: "0.3rem 0.8rem", borderRadius: "100px", border: "none", cursor: "pointer",
                 fontSize: "0.78rem", fontWeight: 600, transition: "all 0.2s",
-                background: horizon === h ? "#2d6a4f" : "transparent",
-                color: horizon === h ? "white" : "#4a6741",
+                background: horizon === h ? "#556b2f" : "transparent",
+                color: horizon === h ? "white" : "#666b4f",
               }}>
                 {h}d
               </button>
@@ -141,36 +141,36 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
 
         <ResponsiveContainer width="100%" height={180}>
           <BarChart data={chartData} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
-            <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#4a6741" }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 10, fill: "#4a6741" }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
+            <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#666b4f" }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 10, fill: "#666b4f" }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${v}`} />
             <Tooltip
               contentStyle={{ borderRadius: "10px", border: "1px solid rgba(45,106,79,0.2)", fontSize: "0.82rem" }}
               formatter={(v: number) => [`₹${v}/q`, t("Price", "भाव")]}
             />
             <Bar dataKey="price" radius={[8, 8, 0, 0]}>
               {chartData.map((entry, i) => (
-                <Cell key={i} fill={entry.predicted ? "#52b788" : "#2d6a4f"} fillOpacity={entry.predicted ? 0.7 : 1} />
+                <Cell key={i} fill={entry.predicted ? "#8fbc8f" : "#556b2f"} fillOpacity={entry.predicted ? 0.7 : 1} />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
 
-        <div style={{ display: "flex", gap: "1.5rem", fontSize: "0.75rem", color: "#4a6741", justifyContent: "center", marginTop: "0.5rem" }}>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}><span style={{ width: "12px", height: "12px", borderRadius: "3px", background: "#2d6a4f", display: "inline-block" }} />{t("Current", "वर्तमान")}</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}><span style={{ width: "12px", height: "12px", borderRadius: "3px", background: "#52b788", display: "inline-block" }} />{t("AI Predicted", "AI अनुमान")}</span>
+        <div style={{ display: "flex", gap: "1.5rem", fontSize: "0.75rem", color: "#666b4f", justifyContent: "center", marginTop: "0.5rem" }}>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}><span style={{ width: "12px", height: "12px", borderRadius: "3px", background: "#556b2f", display: "inline-block" }} />{t("Current", "वर्तमान")}</span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}><span style={{ width: "12px", height: "12px", borderRadius: "3px", background: "#8fbc8f", display: "inline-block" }} />{t("AI Predicted", "AI अनुमान")}</span>
         </div>
       </div>
 
       {/* All Crop Predictions */}
       <div className="premium-card" style={{ padding: "1.5rem" }}>
-        <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "0.95rem", fontWeight: 700, color: "#1b2d1e", margin: "0 0 1rem" }}>
+        <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "0.95rem", fontWeight: 700, color: "#2b2e1e", margin: "0 0 1rem" }}>
           🌾 {t("All Crop Forecasts", "सभी फसलों का अनुमान")}
         </h3>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.83rem" }}>
           <thead>
             <tr>
               {[t("Crop", "फसल"), t("Current", "वर्तमान"), t("7 Days", "7 दिन"), t("15 Days", "15 दिन"), t("30 Days", "30 दिन"), t("Confidence", "विश्वास")].map((h) => (
-                <th key={h} style={{ textAlign: "left", padding: "0.5rem 0.6rem", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#4a6741", borderBottom: "1px solid rgba(45,106,79,0.1)" }}>{h}</th>
+                <th key={h} style={{ textAlign: "left", padding: "0.5rem 0.6rem", fontSize: "0.68rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#666b4f", borderBottom: "1px solid rgba(45,106,79,0.1)" }}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -183,17 +183,17 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
                   onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(45,106,79,0.03)")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                 >
-                  <td style={{ padding: "0.65rem 0.6rem", fontWeight: 600, color: "#1b2d1e" }}>{p.icon} {t(p.crop, p.cropHi)}</td>
-                  <td style={{ padding: "0.65rem 0.6rem", color: "#2d6a4f", fontWeight: 700 }}>₹{p.current.toLocaleString("en-IN")}</td>
-                  <td style={{ padding: "0.65rem 0.6rem", color: "#52b788", fontWeight: 600 }}>₹{p.p7.toLocaleString("en-IN")}</td>
-                  <td style={{ padding: "0.65rem 0.6rem", color: "#52b788", fontWeight: 600 }}>₹{p.p15.toLocaleString("en-IN")}</td>
-                  <td style={{ padding: "0.65rem 0.6rem", color: "#52b788", fontWeight: 600 }}>₹{p.p30.toLocaleString("en-IN")}</td>
+                  <td style={{ padding: "0.65rem 0.6rem", fontWeight: 600, color: "#2b2e1e" }}>{p.icon} {t(p.crop, p.cropHi)}</td>
+                  <td style={{ padding: "0.65rem 0.6rem", color: "#556b2f", fontWeight: 700 }}>₹{p.current.toLocaleString("en-IN")}</td>
+                  <td style={{ padding: "0.65rem 0.6rem", color: "#8fbc8f", fontWeight: 600 }}>₹{p.p7.toLocaleString("en-IN")}</td>
+                  <td style={{ padding: "0.65rem 0.6rem", color: "#8fbc8f", fontWeight: 600 }}>₹{p.p15.toLocaleString("en-IN")}</td>
+                  <td style={{ padding: "0.65rem 0.6rem", color: "#8fbc8f", fontWeight: 600 }}>₹{p.p30.toLocaleString("en-IN")}</td>
                   <td style={{ padding: "0.65rem 0.6rem" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
                       <div style={{ flex: 1, height: "5px", background: "rgba(45,106,79,0.1)", borderRadius: "3px", overflow: "hidden" }}>
-                        <div style={{ height: "100%", width: `${p.confidence}%`, background: "#2d6a4f", borderRadius: "3px" }} />
+                        <div style={{ height: "100%", width: `${p.confidence}%`, background: "#556b2f", borderRadius: "3px" }} />
                       </div>
-                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#2d6a4f", whiteSpace: "nowrap" }}>{p.confidence}%</span>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#556b2f", whiteSpace: "nowrap" }}>{p.confidence}%</span>
                     </div>
                   </td>
                 </tr>
