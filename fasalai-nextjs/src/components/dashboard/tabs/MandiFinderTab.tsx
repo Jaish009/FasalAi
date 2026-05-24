@@ -10,6 +10,7 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
   const t = (en: string, hi: string) => (lang === "hi" ? hi : en);
   const [search, setSearch] = useState("");
   const [state, setState] = useState("");
+  const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null);
 
   const displayMandis = allMandis.length > 0 ? allMandis : [
     { id: "m1", name: "Indore Mandi", nameHindi: "इंदौर मंडी", state: "Madhya Pradesh", district: "Indore", latitude: 22.72, longitude: 75.86, facilities: ["Cold Storage", "Weighing", "Parking", "Bank"], rating: 4.2, timings: "6:00 AM – 6:00 PM" },
@@ -19,12 +20,31 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
     { id: "m5", name: "Bhopal Mandi", nameHindi: "भोपाल मंडी", state: "Madhya Pradesh", district: "Bhopal", latitude: 23.26, longitude: 77.41, facilities: ["Cold Storage", "Weighing", "Parking", "Bank", "Canteen"], rating: 4.5, timings: "6:00 AM – 7:00 PM" },
   ];
 
-  const filtered = displayMandis.filter((m: any) =>
+  let filtered = displayMandis.filter((m: any) =>
     (m.name.toLowerCase().includes(search.toLowerCase()) ||
      m.nameHindi.includes(search) ||
      m.district.toLowerCase().includes(search.toLowerCase())) &&
     (!state || m.state === state)
   );
+
+  if (userLocation) {
+    filtered = [...filtered].sort((a: any, b: any) => {
+      const distA = Math.pow(a.latitude - userLocation.lat, 2) + Math.pow(a.longitude - userLocation.lng, 2);
+      const distB = Math.pow(b.latitude - userLocation.lat, 2) + Math.pow(b.longitude - userLocation.lng, 2);
+      return distA - distB;
+    });
+  }
+
+  const handleNearMe = () => {
+    if (userLocation) {
+      setUserLocation(null);
+      return;
+    }
+    navigator.geolocation?.getCurrentPosition(
+      (pos) => setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => alert(t("Could not get location. Please enable location access.", "स्थान प्राप्त नहीं किया जा सका। कृपया स्थान पहुंच सक्षम करें।"))
+    );
+  };
 
   return (
     <div style={{ maxWidth: "100%" }}>
@@ -45,10 +65,14 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
           style={{ flex: 1, padding: "0.7rem 1rem", borderRadius: "12px", border: "1px solid rgba(45,106,79,0.2)", fontSize: "0.9rem", outline: "none", color: "#2b2e1e" }}
         />
         <button
-          onClick={() => navigator.geolocation?.getCurrentPosition(() => {})}
-          style={{ padding: "0.7rem 1.2rem", borderRadius: "12px", border: "1px solid rgba(45,106,79,0.2)", background: "white", cursor: "pointer", fontSize: "0.85rem", color: "#556b2f", fontWeight: 600, whiteSpace: "nowrap" }}
+          onClick={handleNearMe}
+          style={{ 
+            padding: "0.7rem 1.2rem", borderRadius: "12px", border: "1px solid rgba(45,106,79,0.2)", 
+            background: userLocation ? "#556b2f" : "white", cursor: "pointer", fontSize: "0.85rem", 
+            color: userLocation ? "white" : "#556b2f", fontWeight: 600, whiteSpace: "nowrap", transition: "all 0.2s" 
+          }}
         >
-          📍 {t("Near Me", "मेरे पास")}
+          📍 {t("Near Me", "मेरे पास")} {userLocation && "✓"}
         </button>
       </div>
 
@@ -85,12 +109,14 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
               ))}
             </div>
 
-            <button style={{
-              width: "100%", marginTop: "1rem", padding: "0.55rem",
-              borderRadius: "10px", border: "1px solid rgba(45,106,79,0.3)",
-              background: "transparent", color: "#556b2f", fontSize: "0.82rem",
-              fontWeight: 600, cursor: "pointer", transition: "all 0.2s",
-            }}
+            <button 
+              onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${mandi.latitude},${mandi.longitude}`, '_blank')}
+              style={{
+                width: "100%", marginTop: "1rem", padding: "0.55rem",
+                borderRadius: "10px", border: "1px solid rgba(45,106,79,0.3)",
+                background: "transparent", color: "#556b2f", fontSize: "0.82rem",
+                fontWeight: 600, cursor: "pointer", transition: "all 0.2s",
+              }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#556b2f"; (e.currentTarget as HTMLElement).style.color = "white"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = "#556b2f"; }}
             >
