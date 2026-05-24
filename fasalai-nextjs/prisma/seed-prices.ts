@@ -21,7 +21,7 @@ const CROP_PRICE_PROFILES: Record<string, {
   },
   "crop-soybean": {
     base: 4800,
-    volatility: 0.04, 12
+    volatility: 0.04,
     seasonal: [0.95, 0.92, 0.90, 0.88, 0.90, 0.95, 1.00, 1.05, 1.08, 1.12, 1.10, 1.00],
     arrivalBase: 320,
   },

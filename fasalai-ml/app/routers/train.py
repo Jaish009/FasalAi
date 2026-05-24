@@ -5,14 +5,14 @@ import logging
 import time
 from fastapi import APIRouter, Depends, Request, BackgroundTasks
 from app.models.schemas import TrainRequest, TrainResponse
-from app.services.prophet_service import ProphetService
+from app.services.forecast_service import ForecastService
 from app.services.database import DatabaseService
 from app.services.auth import verify_token
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-prophet_svc = ProphetService()
+forecast_svc = ForecastService()
 db_svc = DatabaseService()
 
 
@@ -85,7 +85,7 @@ async def _train_all(pairs: list, model_store, force: bool):
                 failed += 1
                 continue
 
-            model, metrics = prophet_svc.train(df, crop_id, mandi_id)
+            model, metrics = forecast_svc.train(df, crop_id, mandi_id)
             model_store.set_model(crop_id, mandi_id, model)
             trained += 1
             logger.info(f"✅ Trained {pair.get('crop_name', crop_id)} @ {pair.get('mandi_name', mandi_id)}")
@@ -104,7 +104,7 @@ async def training_status(request: Request):
 
     for key in model_store.models:
         crop_id, mandi_id = key.split("__")
-        age_hours = prophet_svc.get_model_age_hours(crop_id, mandi_id)
+        age_hours = forecast_svc.get_model_age_hours(crop_id, mandi_id)
         models_info.append({
             "key": key,
             "crop_id": crop_id,

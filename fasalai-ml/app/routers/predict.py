@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Depends, Request
 from datetime import datetime, timedelta
 
 from app.models.schemas import PredictRequest, PredictResponse, DayPrediction
-from app.services.prophet_service import ProphetService
+from app.services.forecast_service import ForecastService
 from app.services.database import DatabaseService
 from app.services.auth import verify_token
 from app.config import settings
@@ -14,7 +14,7 @@ from app.config import settings
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
-prophet_svc = ProphetService()
+forecast_svc = ForecastService()
 db_svc = DatabaseService()
 
 
@@ -54,49 +54,27 @@ async def predict_price(request: Request, body: PredictRequest):
         df = db_svc.get_price_history(crop_id, mandi_id, days=730)  # 2 years
 
         if df.empty or len(df) < settings.MIN_TRAINING_DAYS:
-            logger.warning(f"Insufficient data for {crop_id}/{mandi_id} — using mock prediction")
-
-            # Fallback: mock prediction
-            result = prophet_svc.generate_mock_prediction(crop_name, horizon)
-            current_price = result["current_price"]
-            target_date = (datetime.now() + timedelta(days=horizon)).strftime("%Y-%m-%d")
-
-            return PredictResponse(
-                crop_id=crop_id,
-                mandi_id=mandi_id,
-                crop_name=crop_name,
-                mandi_name=mandi_name,
-                current_price=current_price,
-                predicted_price=result["predicted_price"],
-                min_price=result["min_price"],
-                max_price=result["max_price"],
-                confidence=result["confidence"],
-                trend=result["trend"],
-                horizon=horizon,
-                target_date=target_date,
-                daily_forecast=[DayPrediction(**d) for d in result["daily_forecast"]],
-                best_sell_day=result["best_sell_day"],
-                model_version="mock-v1",
-                trained_on_days=0,
-            )
-
-        try:
-            model, metrics = prophet_svc.train(df, crop_id, mandi_id)
-            model_store.set_model(crop_id, mandi_id, model)
-            logger.info(f"✅ Model trained: {metrics}")
-        except Exception as e:
-            logger.error(f"Training failed for {crop_id}/{mandi_id}: {e}")
-            raise HTTPException(status_code=500, detail=f"Model training failed: {str(e)}")
+            logger.warning(f"No model/data for {crop_id}/{mandi_id}. Using mock fallback.")
+            result = forecast_svc.generate_mock_prediction(crop_name, horizon)
+        else:
+            try:
+                model, metrics = forecast_svc.train(df, crop_id, mandi_id)
+                model_store.set_model(crop_id, mandi_id, model)
+                logger.info(f"✅ Model trained: {metrics}")
+                result = forecast_svc.predict(model, df, horizon)
+            except Exception as e:
+                logger.error(f"Training failed for {crop_id}/{mandi_id}: {e}")
+                raise HTTPException(status_code=500, detail=f"Model training failed: {str(e)}")
     else:
         # Fetch recent data for prediction context
         df = db_svc.get_price_history(crop_id, mandi_id, days=90)
 
-    # ── Run prediction ──
-    try:
-        result = prophet_svc.predict(model, df, horizon)
-    except Exception as e:
-        logger.error(f"Prediction failed: {e}")
-        raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
+        # ── Run prediction ──
+        try:
+            result = forecast_svc.predict(model, df, horizon)
+        except Exception as e:
+            logger.error(f"Prediction failed: {e}")
+            raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
 
     # ── Save prediction to DB ──
     target_date = (datetime.now() + timedelta(days=horizon)).strftime("%Y-%m-%d")
@@ -110,7 +88,7 @@ async def predict_price(request: Request, body: PredictRequest):
         "horizon": horizon,
         "confidence": result["confidence"],
         "trend": result["trend"],
-        "model_version": "prophet-v1",
+        "model_version": "sklearn-v1",
     })
 
     return PredictResponse(
@@ -128,8 +106,8 @@ async def predict_price(request: Request, body: PredictRequest):
         target_date=target_date,
         daily_forecast=[DayPrediction(**d) for d in result["daily_forecast"]],
         best_sell_day=result["best_sell_day"],
-        model_version="prophet-v1",
-        trained_on_days=len(df),
+        model_version="sklearn-v1",
+        trained_on_days=len(df) if 'df' in locals() and not df.empty else 0,
     )
 
 

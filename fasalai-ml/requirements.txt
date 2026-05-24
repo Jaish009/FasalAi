@@ -7,7 +7,6 @@ uvicorn[standard]
 python-dotenv
 
 # ── ML & Data Science ─────────────────────
-prophet          # Facebook Prophet for time series forecasting
 pandas
 numpy
 scikit-learn
