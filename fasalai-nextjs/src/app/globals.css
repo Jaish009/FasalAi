@@ -28,12 +28,42 @@ html {
 }
 
 body {
-  background-color: var(--color-cream);
+  /* Premium Light Mesh Gradient Background */
+  background-color: #fdfbf7;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(148,40%,90%,1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(43,60%,92%,1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(148,30%,92%,1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(43,40%,94%,1) 0px, transparent 50%);
+  background-attachment: fixed;
   color: var(--color-forest);
+}
+
+/* Premium Glass & Shadow Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(45, 106, 79, 0.05);
+}
+
+.premium-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid rgba(45, 106, 79, 0.05);
+  box-shadow: 0 4px 24px rgba(45, 106, 79, 0.04);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.premium-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(45, 106, 79, 0.08);
+  border-color: rgba(45, 106, 79, 0.15);
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-cream-dark); }
-::-webkit-scrollbar-thumb { background: var(--color-green-pale); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-green-bright); }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(45,106,79,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(45,106,79,0.4); }

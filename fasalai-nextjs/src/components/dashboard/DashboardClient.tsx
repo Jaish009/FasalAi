@@ -51,8 +51,10 @@ export default function DashboardClient({ user, latestPrices, allCrops, allMandi
         {/* Top Bar */}
         <header
           style={{
-            background: "white",
-            borderBottom: "1px solid rgba(45,106,79,0.1)",
+            background: "rgba(255, 255, 255, 0.4)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.6)",
             padding: "1rem 1.5rem",
             display: "flex",
             alignItems: "center",

@@ -135,14 +135,10 @@ export default function AlertsTab({ user, allCrops, allMandis, lang }: Props) {
         {displayAlerts.map((alert: any) => (
           <div
             key={alert.id}
+            className="premium-card"
             style={{
-              background: "white",
-              borderRadius: "16px",
               padding: "1.3rem 1.5rem",
-              boxShadow: "0 4px 16px rgba(45,106,79,0.08)",
-              border: alert.triggered
-                ? "1px solid rgba(82,183,136,0.4)"
-                : "1px solid rgba(45,106,79,0.07)",
+              border: alert.triggered ? "2px solid rgba(82,183,136,0.5)" : undefined,
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",

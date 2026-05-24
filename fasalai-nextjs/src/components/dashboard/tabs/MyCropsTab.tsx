@@ -105,15 +105,8 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
           return (
             <div
               key={i}
-              style={{
-                background: "white",
-                borderRadius: "16px",
-                padding: "1.3rem",
-                boxShadow: "0 4px 16px rgba(45,106,79,0.08)",
-                border: "1px solid rgba(45,106,79,0.07)",
-                transition: "all 0.2s",
-                cursor: "pointer",
-              }}
+              className="premium-card"
+              style={{ padding: "1.3rem", cursor: "pointer" }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
                 (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 32px rgba(45,106,79,0.15)";

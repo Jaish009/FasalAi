@@ -72,13 +72,8 @@ export default function OverviewTab({ user, latestPrices, lang, setActiveTab }: 
         {STAT_CARDS.map((card) => (
           <div
             key={card.key}
-            style={{
-              background: "white",
-              borderRadius: "16px",
-              padding: "1.2rem",
-              boxShadow: "0 4px 16px rgba(45,106,79,0.08)",
-              border: "1px solid rgba(45,106,79,0.07)",
-            }}
+            className="premium-card"
+            style={{ padding: "1.2rem" }}
           >
             <div style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>{card.icon}</div>
             <div
@@ -100,14 +95,8 @@ export default function OverviewTab({ user, latestPrices, lang, setActiveTab }: 
 
       {/* Chart */}
       <div
-        style={{
-          background: "white",
-          borderRadius: "16px",
-          padding: "1.5rem",
-          boxShadow: "0 4px 16px rgba(45,106,79,0.08)",
-          border: "1px solid rgba(45,106,79,0.07)",
-          marginBottom: "1.5rem",
-        }}
+        className="premium-card"
+        style={{ padding: "1.5rem", marginBottom: "1.5rem" }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.2rem" }}>
           <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1rem", fontWeight: 700, color: "#1b2d1e", margin: 0 }}>
@@ -159,13 +148,8 @@ export default function OverviewTab({ user, latestPrices, lang, setActiveTab }: 
       {/* Price Table */}
       <div
         style={{
-          background: "white",
-          borderRadius: "16px",
-          padding: "1.5rem",
-          boxShadow: "0 4px 16px rgba(45,106,79,0.08)",
-          border: "1px solid rgba(45,106,79,0.07)",
-          marginBottom: "1.5rem",
-        }}
+        className="premium-card"
+        style={{ padding: "1.5rem", marginBottom: "1.5rem" }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
           <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1rem", fontWeight: 700, color: "#1b2d1e", margin: 0 }}>

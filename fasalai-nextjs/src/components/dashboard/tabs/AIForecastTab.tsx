@@ -120,7 +120,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
       </div>
 
       {/* Horizon Toggle + Chart */}
-      <div style={{ background: "white", borderRadius: "16px", padding: "1.5rem", boxShadow: "0 4px 16px rgba(45,106,79,0.08)", border: "1px solid rgba(45,106,79,0.07)", marginBottom: "1.5rem" }}>
+      <div className="premium-card" style={{ padding: "1.5rem", marginBottom: "1.5rem" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.2rem" }}>
           <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "0.95rem", fontWeight: 700, color: "#1b2d1e", margin: 0 }}>
             📈 {t("Price Forecast Chart", "मूल्य अनुमान चार्ट")}
@@ -162,7 +162,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
       </div>
 
       {/* All Crop Predictions */}
-      <div style={{ background: "white", borderRadius: "16px", padding: "1.5rem", boxShadow: "0 4px 16px rgba(45,106,79,0.08)", border: "1px solid rgba(45,106,79,0.07)" }}>
+      <div className="premium-card" style={{ padding: "1.5rem" }}>
         <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "0.95rem", fontWeight: 700, color: "#1b2d1e", margin: "0 0 1rem" }}>
           🌾 {t("All Crop Forecasts", "सभी फसलों का अनुमान")}
         </h3>

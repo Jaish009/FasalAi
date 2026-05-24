@@ -38,8 +38,11 @@ export default function Sidebar({ activeTab, setActiveTab, lang, open, onClose }
       <aside
         style={{
           width: "220px",
-          background: "white",
-          borderRight: "1px solid rgba(45,106,79,0.1)",
+          background: "rgba(255, 255, 255, 0.65)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderRight: "1px solid rgba(255, 255, 255, 0.8)",
+          boxShadow: "4px 0 24px rgba(45, 106, 79, 0.03)",
           display: "flex",
           flexDirection: "column",
           padding: "1.5rem 1rem",

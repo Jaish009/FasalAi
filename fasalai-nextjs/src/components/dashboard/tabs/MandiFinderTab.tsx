@@ -55,14 +55,7 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
       {/* Mandi Cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1rem" }}>
         {filtered.map((mandi: any) => (
-          <div key={mandi.id} style={{
-            background: "white", borderRadius: "16px", padding: "1.3rem",
-            boxShadow: "0 4px 16px rgba(45,106,79,0.08)",
-            border: "1px solid rgba(45,106,79,0.07)", transition: "all 0.2s",
-          }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 32px rgba(45,106,79,0.14)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(45,106,79,0.08)"; }}
-          >
+          <div key={mandi.id} className="premium-card" style={{ padding: "1.3rem" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.8rem" }}>
               <div>
                 <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "1rem", color: "#1b2d1e" }}>
