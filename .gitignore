@@ -1,0 +1,28 @@
+# Node / Next.js
+fasalai-nextjs/node_modules/
+fasalai-nextjs/.next/
+fasalai-nextjs/out/
+fasalai-nextjs/build/
+fasalai-nextjs/dist/
+
+# Python / ML
+fasalai-ml/venv/
+fasalai-ml/__pycache__/
+fasalai-ml/*.pyc
+fasalai-ml/saved_models/
+
+# Environment Variables / Secrets
+.env
+.env.local
+.env.*.local
+fasalai-nextjs/.env*
+fasalai-ml/.env*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

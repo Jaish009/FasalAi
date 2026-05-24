@@ -1,0 +1,30 @@
+# FasalAI ML Service — Python Dependencies
+# Install: pip install -r requirements.txt
+
+# ── Web Framework ──────────────────────────
+fastapi
+uvicorn[standard]
+python-dotenv
+
+# ── ML & Data Science ─────────────────────
+prophet          # Facebook Prophet for time series forecasting
+pandas
+numpy
+scikit-learn
+joblib           # Model serialization
+
+# ── Database ──────────────────────────────
+psycopg2-binary  # PostgreSQL driver
+sqlalchemy
+
+# ── HTTP & API ────────────────────────────
+httpx
+requests
+
+# ── Security ──────────────────────────────
+python-jose[cryptography]
+
+# ── Utils ─────────────────────────────────
+pydantic
+pydantic-settings
+python-multipart

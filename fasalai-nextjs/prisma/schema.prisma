@@ -1,0 +1,254 @@
+// FasalAI — Prisma Database Schema
+// Run: npx prisma migrate dev --name init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────
+// USER
+// ─────────────────────────────────────────
+model User {
+  id          String   @id @default(cuid())
+  clerkId     String   @unique @map("clerk_id")
+  name        String
+  email       String   @unique
+  phone       String?
+  state       String?
+  district    String?
+  language    Language @default(ENGLISH)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  crops       UserCrop[]
+  alerts      Alert[]
+  searchLogs  SearchLog[]
+
+  @@index([clerkId])
+  @@map("users")
+}
+
+enum Language {
+  ENGLISH
+  HINDI
+}
+
+// ─────────────────────────────────────────
+// CROP
+// ─────────────────────────────────────────
+model Crop {
+  id          String     @id @default(cuid())
+  name        String     // English name e.g. "Wheat"
+  nameHindi   String     @map("name_hindi") // Hindi name e.g. "गेहूं"
+  category    CropCategory
+  season      Season[]
+  unit        String     @default("quintal")
+  imageUrl    String?    @map("image_url")
+  createdAt   DateTime   @default(now()) @map("created_at")
+
+  prices      PriceRecord[]
+  predictions PricePrediction[]
+  userCrops   UserCrop[]
+  alerts      Alert[]
+
+  @@index([category])
+  @@map("crops")
+}
+
+enum CropCategory {
+  GRAIN
+  OILSEED
+  VEGETABLE
+  FRUIT
+  FIBER
+  SPICE
+  PULSE
+  OTHER
+}
+
+enum Season {
+  KHARIF
+  RABI
+  ZAID
+}
+
+// ─────────────────────────────────────────
+// USER CROP (Farmer's tracked crops)
+// ─────────────────────────────────────────
+model UserCrop {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  cropId    String   @map("crop_id")
+  mandiId   String?  @map("mandi_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  crop      Crop     @relation(fields: [cropId], references: [id])
+  mandi     Mandi?   @relation(fields: [mandiId], references: [id])
+
+  @@unique([userId, cropId])
+  @@map("user_crops")
+}
+
+// ─────────────────────────────────────────
+// MANDI
+// ─────────────────────────────────────────
+model Mandi {
+  id          String   @id @default(cuid())
+  name        String
+  nameHindi   String   @map("name_hindi")
+  state       String
+  district    String
+  latitude    Float
+  longitude   Float
+  agmarknetId String?  @unique @map("agmarknet_id") // ID from Agmarknet API
+  timings     String?
+  facilities  String[]
+  rating      Float?   @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  prices      PriceRecord[]
+  predictions PricePrediction[]
+  userCrops   UserCrop[]
+
+  @@index([state, district])
+  @@index([latitude, longitude])
+  @@map("mandis")
+}
+
+// ─────────────────────────────────────────
+// PRICE RECORD (Real-time from Agmarknet)
+// ─────────────────────────────────────────
+model PriceRecord {
+  id           String   @id @default(cuid())
+  cropId       String   @map("crop_id")
+  mandiId      String   @map("mandi_id")
+  price        Float    // price per quintal in INR
+  minPrice     Float?   @map("min_price")
+  maxPrice     Float?   @map("max_price")
+  modalPrice   Float?   @map("modal_price") // most common price
+  arrivalQty   Float?   @map("arrival_qty") // quantity arrived in tonnes
+  date         DateTime
+  source       String   @default("agmarknet")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  crop         Crop     @relation(fields: [cropId], references: [id])
+  mandi        Mandi    @relation(fields: [mandiId], references: [id])
+
+  @@unique([cropId, mandiId, date])
+  @@index([cropId, date])
+  @@index([mandiId, date])
+  @@index([date])
+  @@map("price_records")
+}
+
+// ─────────────────────────────────────────
+// AI PRICE PREDICTION
+// ─────────────────────────────────────────
+model PricePrediction {
+  id              String   @id @default(cuid())
+  cropId          String   @map("crop_id")
+  mandiId         String   @map("mandi_id")
+  predictedPrice  Float    @map("predicted_price")
+  minPrice        Float?   @map("min_price")
+  maxPrice        Float?   @map("max_price")
+  targetDate      DateTime @map("target_date")
+  horizon         Int      // days ahead: 7, 15, 30
+  confidence      Float    // 0-100 percentage
+  modelVersion    String   @default("prophet-v1") @map("model_version")
+  trend           Trend    @default(STABLE)
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  crop            Crop     @relation(fields: [cropId], references: [id])
+  mandi           Mandi    @relation(fields: [mandiId], references: [id])
+
+  @@unique([cropId, mandiId, targetDate, horizon])
+  @@index([cropId, targetDate])
+  @@map("price_predictions")
+}
+
+enum Trend {
+  RISING
+  FALLING
+  STABLE
+}
+
+// ─────────────────────────────────────────
+// ALERT
+// ─────────────────────────────────────────
+model Alert {
+  id            String      @id @default(cuid())
+  userId        String      @map("user_id")
+  cropId        String      @map("crop_id")
+  mandiId       String?     @map("mandi_id")
+  targetPrice   Float       @map("target_price")
+  condition     AlertCondition
+  channels      AlertChannel[]
+  isActive      Boolean     @default(true) @map("is_active")
+  triggered     Boolean     @default(false)
+  triggeredAt   DateTime?   @map("triggered_at")
+  triggeredPrice Float?     @map("triggered_price")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  crop          Crop        @relation(fields: [cropId], references: [id])
+
+  @@index([userId, isActive])
+  @@index([cropId, isActive])
+  @@map("alerts")
+}
+
+enum AlertCondition {
+  ABOVE   // notify when price goes above target
+  BELOW   // notify when price goes below target
+}
+
+enum AlertChannel {
+  SMS
+  WHATSAPP
+  EMAIL
+}
+
+// ─────────────────────────────────────────
+// SEARCH LOG (Analytics)
+// ─────────────────────────────────────────
+model SearchLog {
+  id        String   @id @default(cuid())
+  userId    String?  @map("user_id")
+  cropName  String   @map("crop_name")
+  district  String?
+  state     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([cropName])
+  @@map("search_logs")
+}
+
+// ─────────────────────────────────────────
+// WEATHER CACHE (from OpenWeatherMap)
+// ─────────────────────────────────────────
+model WeatherCache {
+  id          String   @id @default(cuid())
+  district    String
+  state       String
+  temperature Float?
+  humidity    Float?
+  rainfall    Float?
+  condition   String?
+  fetchedAt   DateTime @default(now()) @map("fetched_at")
+  expiresAt   DateTime @map("expires_at")
+
+  @@unique([district, state])
+  @@index([district, state])
+  @@map("weather_cache")
+}
