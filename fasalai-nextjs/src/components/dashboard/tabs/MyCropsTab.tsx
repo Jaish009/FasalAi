@@ -50,11 +50,15 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
     if (!selectedCropId) return;
     setLoading(true);
     try {
-      await fetch("/api/crops/my", {
+      const res = await fetch("/api/crops/my", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cropId: selectedCropId, mandiId: selectedMandiId }),
       });
+      if (!res.ok) {
+        alert("Failed to add crop. Error: " + await res.text());
+        return;
+      }
       setShowModal(false);
       setSelectedCropId("");
       setSelectedMandiId("");
