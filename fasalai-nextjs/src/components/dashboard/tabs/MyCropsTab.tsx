@@ -106,7 +106,7 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
             <div
               key={i}
               className="premium-card"
-              style={{ padding: "1.3rem", cursor: "pointer" }}
+              style={{ padding: "1.5rem", cursor: "pointer", position: "relative", overflow: "hidden", minHeight: "200px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
                 (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 32px rgba(45,106,79,0.15)";
@@ -116,56 +116,45 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
                 (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(45,106,79,0.08)";
               }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.8rem" }}>
-                <div style={{ display: "flex", gap: "0.8rem", alignItems: "center" }}>
-                  <img 
-                    src={`/crops/${uc.crop.name.toLowerCase()}.png`} 
-                    alt={uc.crop.name} 
-                    style={{ width: "42px", height: "42px", objectFit: "contain", filter: "drop-shadow(0 4px 6px rgba(85,107,47,0.15))" }} 
-                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  />
-                  <div>
-                    <div style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#666b4f" }}>
-                      {uc.crop.category}
-                    </div>
-                    <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "#2b2e1e", marginTop: "0.2rem" }}>
-                      {t(uc.crop.name, uc.crop.nameHindi)}
-                    </div>
+              {/* Massive Embedded Crop Visual */}
+              <img 
+                src={`/crops/${uc.crop.name.toLowerCase()}.png`} 
+                alt={uc.crop.name} 
+                style={{ position: "absolute", right: "-15px", bottom: "-15px", width: "130px", height: "130px", objectFit: "contain", filter: "drop-shadow(0 15px 25px rgba(0,0,0,0.15))", zIndex: 0, opacity: 0.95 }} 
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+
+              <div style={{ position: "relative", zIndex: 1, display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <div style={{ fontSize: "0.75rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "#666b4f" }}>
+                    {uc.crop.category}
+                  </div>
+                  <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.5rem", fontWeight: 800, color: "#2b2e1e", marginTop: "0.2rem" }}>
+                    {t(uc.crop.name, uc.crop.nameHindi)}
                   </div>
                 </div>
                 <button
-                  style={{ background: "rgba(230,57,70,0.08)", border: "none", borderRadius: "8px", padding: "0.3rem 0.5rem", cursor: "pointer", fontSize: "0.75rem", color: "#e63946" }}
+                  style={{ background: "rgba(230,57,70,0.08)", border: "none", borderRadius: "8px", padding: "0.4rem 0.6rem", cursor: "pointer", fontSize: "0.8rem", color: "#e63946" }}
                   title="Remove crop"
                 >✕</button>
               </div>
 
-              <div style={{ fontSize: "0.78rem", color: "#666b4f", marginBottom: "0.8rem" }}>
-                📍 {uc.mandi ? t(uc.mandi.name, uc.mandi.nameHindi) : t("Select mandi", "मंडी चुनें")}
+              <div style={{ position: "relative", zIndex: 1, marginTop: "1rem" }}>
+                <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#666b4f", marginBottom: "0.4rem" }}>
+                  📍 {uc.mandi ? t(uc.mandi.name, uc.mandi.nameHindi) : t("Select mandi", "मंडी चुनें")}
+                </div>
+                <div style={{ fontFamily: "Syne, sans-serif", fontSize: "2.2rem", fontWeight: 800, color: "#556b2f" }}>
+                  ₹{priceData.price.toLocaleString("en-IN")}
+                  <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "#666b4f", marginLeft: "0.2rem" }}>/q</span>
+                </div>
+                <div style={{
+                  display: "inline-flex", alignItems: "center", gap: "0.4rem",
+                  marginTop: "0.5rem", fontSize: "0.9rem", fontWeight: 700,
+                  color: priceData.change >= 0 ? "#556b2f" : "#e63946",
+                }}>
+                  {priceData.change >= 0 ? "▲" : "▼"} {Math.abs(priceData.change)}% {t("today", "आज")}
+                </div>
               </div>
-
-              <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.7rem", fontWeight: 800, color: "#556b2f" }}>
-                ₹{priceData.price.toLocaleString("en-IN")}
-                <span style={{ fontSize: "0.7rem", fontWeight: 400, color: "#666b4f" }}>/q</span>
-              </div>
-
-              <div style={{
-                display: "inline-flex", alignItems: "center", gap: "0.3rem",
-                marginTop: "0.4rem", fontSize: "0.78rem", fontWeight: 600,
-                color: priceData.change >= 0 ? "#556b2f" : "#e63946",
-              }}>
-                {priceData.change >= 0 ? "▲" : "▼"} {Math.abs(priceData.change)}% {t("today", "आज")}
-              </div>
-
-              {/* Mini chart placeholder */}
-              <svg width="100%" height="32" viewBox="0 0 120 32" style={{ marginTop: "0.8rem" }}>
-                <polyline
-                  points={`0,${28 - i * 2} 20,${24 - i} 40,${20 + i} 60,${16 - i * 2} 80,${12 + i} 100,${10 - i} 120,${priceData.change >= 0 ? 6 : 20}`}
-                  fill="none"
-                  stroke={priceData.change >= 0 ? "#556b2f" : "#e63946"}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
             </div>
           );
         })}
