@@ -22,6 +22,7 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All Crops");
+  const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
 
   // Mock Field Data for the new UI aesthetic
   const MOCK_FIELD_DATA: Record<string, any> = {
@@ -101,12 +102,50 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
           <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.6rem", fontWeight: 700, color: "#1b2d1e" }}>
             {t(uc.crop.name, uc.crop.nameHindi)}
           </div>
-          <button 
-            onClick={(e) => uc.id ? handleRemoveCrop(uc.id, e) : null}
-            style={{ background: "none", border: "none", cursor: "pointer", color: "#666b4f", fontSize: "1.2rem", padding: "0.2rem" }}
-          >
-            •••
-          </button>
+          <div style={{ position: "relative" }}>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setMenuOpenId(menuOpenId === (uc.id || uc.crop.id) ? null : (uc.id || uc.crop.id)); }}
+              style={{ background: "none", border: "none", cursor: "pointer", color: "#666b4f", fontSize: "1.2rem", padding: "0.2rem" }}
+            >
+              •••
+            </button>
+            {menuOpenId === (uc.id || uc.crop.id) && (
+              <>
+                <div 
+                  style={{ position: "fixed", inset: 0, zIndex: 9 }} 
+                  onClick={(e) => { e.stopPropagation(); setMenuOpenId(null); }} 
+                />
+                <div style={{ position: "absolute", top: "100%", right: 0, background: "white", borderRadius: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.15)", padding: "0.5rem", zIndex: 10, minWidth: "120px" }}>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setMenuOpenId(null); setDetailsCrop({ ...uc, fieldData }); }}
+                    style={{ width: "100%", textAlign: "left", padding: "0.5rem 1rem", border: "none", background: "none", cursor: "pointer", fontSize: "0.85rem", color: "#2b2e1e", borderRadius: "4px" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#f0f0f0"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "none"}
+                  >
+                    {t("View Details", "विवरण देखें")}
+                  </button>
+                  <button 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      setMenuOpenId(null);
+                      if (uc.id) {
+                        if (confirm(t("Are you sure you want to remove this crop?", "क्या आप वाकई इस फसल को हटाना चाहते हैं?"))) {
+                          handleRemoveCrop(uc.id, e);
+                        }
+                      } else {
+                        alert(t("This is a default crop and cannot be removed.", "यह एक डिफ़ॉल्ट फसल है और इसे हटाया नहीं जा सकता।"));
+                      }
+                    }}
+                    style={{ width: "100%", textAlign: "left", padding: "0.5rem 1rem", border: "none", background: "none", cursor: "pointer", fontSize: "0.85rem", color: "#e63946", borderRadius: "4px" }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "#fdf0f0"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "none"}
+                  >
+                    {t("Remove Crop", "फसल हटाएं")}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
