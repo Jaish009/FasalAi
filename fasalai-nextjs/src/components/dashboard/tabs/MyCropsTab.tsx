@@ -12,11 +12,6 @@ interface Props {
   lang: "en" | "hi";
 }
 
-const CATEGORY_ICONS: Record<string, string> = {
-  GRAIN: "🌾", OILSEED: "🌱", VEGETABLE: "🥬", FRUIT: "🍎",
-  FIBER: "🌿", SPICE: "🧄", PULSE: "🫘", OTHER: "🌸",
-};
-
 export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
   const t = (en: string, hi: string) => (lang === "hi" ? hi : en);
   const router = useRouter();
@@ -36,14 +31,13 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
     "crop-onion": { location: "Sector 4, Nashik", area: "12 Ha", planted: "Jan 10, 2024", harvest: "May 20, 2024", progress: 40, statusText: "40% to harvest" },
   };
 
-  // Default crops if user has none
   const displayCrops = user.crops.length > 0
     ? user.crops
     : [
-        { crop: { id: "crop-wheat", name: "Wheat", nameHindi: "गेहूं", category: "GRAIN" } },
-        { crop: { id: "crop-soybean", name: "Soybean", nameHindi: "सोयाबीन", category: "OILSEED" } },
-        { crop: { id: "crop-cotton", name: "Cotton", nameHindi: "कपास", category: "FIBER" } },
-        { crop: { id: "crop-maize", name: "Maize", nameHindi: "मक्का", category: "GRAIN" } },
+        { crop: { id: "crop-wheat", name: "Wheat", nameHindi: "गेहूं", category: "GRAIN", season: ["RABI"] } },
+        { crop: { id: "crop-soybean", name: "Soybean", nameHindi: "सोयाबीन", category: "OILSEED", season: ["KHARIF"] } },
+        { crop: { id: "crop-cotton", name: "Cotton", nameHindi: "कपास", category: "FIBER", season: ["KHARIF"] } },
+        { crop: { id: "crop-maize", name: "Maize", nameHindi: "मक्का", category: "GRAIN", season: ["KHARIF", "RABI"] } },
       ];
 
   const handleAddCrop = async () => {
@@ -86,6 +80,67 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
       c.nameHindi.includes(search)
   );
 
+  const renderCropCard = (uc: any, key: React.Key) => {
+    const fieldData = MOCK_FIELD_DATA[uc.crop.id] || { 
+      location: `Field C (${t(uc.crop.name, uc.crop.nameHindi)})`,
+      area: "10 Ha", planted: "Recent", harvest: "Upcoming", progress: 10, statusText: "Just planted" 
+    };
+
+    return (
+      <div
+        key={key}
+        style={{ 
+          background: "#fdfbf7", border: "1px solid rgba(85,107,47,0.1)", borderRadius: "20px", 
+          padding: "1.5rem", boxShadow: "0 8px 32px rgba(85,107,47,0.06)",
+          display: "flex", flexDirection: "column", gap: "1.5rem",
+          transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.6rem", fontWeight: 700, color: "#1b2d1e" }}>
+            {t(uc.crop.name, uc.crop.nameHindi)}
+          </div>
+          <button 
+            onClick={(e) => uc.id ? handleRemoveCrop(uc.id, e) : null}
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#666b4f", fontSize: "1.2rem", padding: "0.2rem" }}
+          >
+            •••
+          </button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
+            <img 
+              src={`/crops/${uc.crop.name.toLowerCase()}.png`} alt={uc.crop.name} 
+              style={{ width: "100%", maxWidth: "140px", objectFit: "contain", filter: "drop-shadow(0 15px 25px rgba(0,0,0,0.15))" }} 
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", fontSize: "0.8rem", color: "#2b2e1e" }}>
+            <div><div style={{ color: "#666b4f", marginBottom: "0.1rem" }}>Crop Name</div><div style={{ fontWeight: 600 }}>{fieldData.location}</div></div>
+            <div><div style={{ color: "#666b4f", marginBottom: "0.1rem" }}>Area</div><div style={{ fontWeight: 600 }}>{fieldData.area}</div></div>
+            <div><div style={{ color: "#666b4f", marginBottom: "0.1rem" }}>Planting Date</div><div style={{ fontWeight: 600 }}>{fieldData.planted}</div></div>
+            <div><div style={{ color: "#666b4f", marginBottom: "0.1rem" }}>Harvest Date</div><div style={{ fontWeight: 600, color: fieldData.isGreenStatus ? "#556b2f" : "#2b2e1e" }}>{fieldData.harvest}</div></div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+          <div style={{ flex: 1, paddingRight: "2rem" }}>
+            <div style={{ fontSize: "0.8rem", color: "#2b2e1e", marginBottom: "0.4rem" }}>
+              Status <br/><span style={{ fontWeight: 600 }}>{fieldData.statusText}</span>
+            </div>
+            <div style={{ height: "6px", background: "rgba(85,107,47,0.15)", borderRadius: "10px", overflow: "hidden" }}>
+              <div style={{ height: "100%", width: `${fieldData.progress}%`, background: "#6b8e23", borderRadius: "10px" }} />
+            </div>
+          </div>
+          <button style={{ background: "#6b8e23", color: "white", border: "none", borderRadius: "100px", padding: "0.6rem 1.2rem", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", boxShadow: "0 4px 12px rgba(107,142,35,0.3)" }}>
+            View Details
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div style={{ maxWidth: "100%", fontFamily: "var(--font-sans)" }}>
       {/* Header */}
@@ -110,12 +165,7 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
               key={f}
               onClick={() => setFilter(f)}
               style={{
-                padding: "0.45rem 1.2rem",
-                borderRadius: "8px",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 0.2s",
+                padding: "0.45rem 1.2rem", borderRadius: "8px", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "all 0.2s",
                 background: filter === f ? "#6b8e23" : "transparent",
                 color: filter === f ? "white" : "#4a6741",
                 border: filter === f ? "1px solid #6b8e23" : "1px solid rgba(45,106,79,0.2)",
@@ -135,26 +185,17 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               style={{
-                padding: "0.5rem 1rem 0.5rem 2.2rem",
-                borderRadius: "8px",
-                border: "1px solid rgba(45,106,79,0.2)",
-                outline: "none",
-                fontSize: "0.85rem",
-                background: "white",
-                minWidth: "220px"
+                padding: "0.5rem 1rem 0.5rem 2.2rem", borderRadius: "8px", border: "1px solid rgba(45,106,79,0.2)",
+                outline: "none", fontSize: "0.85rem", background: "white", minWidth: "220px"
               }}
             />
           </div>
           <button
             onClick={() => setShowModal(true)}
             style={{
-              background: "#556b2f", color: "white",
-              border: "none", borderRadius: "8px",
-              padding: "0.55rem 1.2rem", cursor: "pointer",
-              fontSize: "0.85rem", fontWeight: 600,
-              display: "flex", alignItems: "center", gap: "0.4rem",
-              boxShadow: "0 4px 12px rgba(85,107,47,0.2)",
-              transition: "all 0.2s",
+              background: "#556b2f", color: "white", border: "none", borderRadius: "8px",
+              padding: "0.55rem 1.2rem", cursor: "pointer", fontSize: "0.85rem", fontWeight: 600,
+              display: "flex", alignItems: "center", gap: "0.4rem", boxShadow: "0 4px 12px rgba(85,107,47,0.2)", transition: "all 0.2s",
             }}
           >
             + {t("Add", "जोड़ें")}
@@ -162,99 +203,65 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
         </div>
       </div>
 
-      {/* Field Cards Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.5rem", marginBottom: "2rem" }}>
-        {displayCrops.map((uc: any, i: number) => {
-          const fieldData = MOCK_FIELD_DATA[uc.crop.id] || MOCK_FIELD_DATA["crop-wheat"];
-          
-          return (
-            <div
-              key={i}
-              style={{ 
-                background: "#fdfbf7",
-                border: "1px solid rgba(85,107,47,0.1)",
-                borderRadius: "20px", 
-                padding: "1.5rem", 
-                boxShadow: "0 8px 32px rgba(85,107,47,0.06)",
-                display: "flex", 
-                flexDirection: "column", 
-                gap: "1.5rem",
-                transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
-              }}
-            >
-              {/* Card Header */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.6rem", fontWeight: 700, color: "#1b2d1e" }}>
-                  {t(uc.crop.name, uc.crop.nameHindi)}
-                </div>
-                <button 
-                  onClick={(e) => uc.id ? handleRemoveCrop(uc.id, e) : null}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "#666b4f", fontSize: "1.2rem", padding: "0.2rem" }}
-                >
-                  •••
-                </button>
-              </div>
+      {/* Dynamic Content based on Filter */}
+      <div style={{ marginBottom: "2rem" }}>
+        {filter === "All Crops" && (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.5rem" }}>
+            {displayCrops.map((uc: any, i: number) => renderCropCard(uc, i))}
+          </div>
+        )}
 
-              {/* Card Body (2 Columns) */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                {/* Visual */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
-                  <img 
-                    src={`/crops/${uc.crop.name.toLowerCase()}.png`} 
-                    alt={uc.crop.name} 
-                    style={{ width: "100%", maxWidth: "140px", objectFit: "contain", filter: "drop-shadow(0 15px 25px rgba(0,0,0,0.15))" }} 
-                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  />
-                </div>
-                
-                {/* Field Details */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem", fontSize: "0.8rem", color: "#2b2e1e" }}>
-                  <div>
-                    <div style={{ color: "#666b4f", marginBottom: "0.1rem" }}>Crop Name</div>
-                    <div style={{ fontWeight: 600 }}>{fieldData.location}</div>
-                  </div>
-                  <div>
-                    <div style={{ color: "#666b4f", marginBottom: "0.1rem" }}>Area</div>
-                    <div style={{ fontWeight: 600 }}>{fieldData.area}</div>
-                  </div>
-                  <div>
-                    <div style={{ color: "#666b4f", marginBottom: "0.1rem" }}>Planting Date</div>
-                    <div style={{ fontWeight: 600 }}>{fieldData.planted}</div>
-                  </div>
-                  <div>
-                    <div style={{ color: "#666b4f", marginBottom: "0.1rem" }}>Harvest Date</div>
-                    <div style={{ fontWeight: 600, color: fieldData.isGreenStatus ? "#556b2f" : "#2b2e1e" }}>{fieldData.harvest}</div>
-                  </div>
+        {filter === "Fields" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+            {Object.entries(
+              displayCrops.reduce((acc: Record<string, any[]>, uc: any) => {
+                const fieldData = MOCK_FIELD_DATA[uc.crop.id] || { location: `Field - ${t(uc.crop.name, uc.crop.nameHindi)}` };
+                const loc = fieldData.location;
+                if (!acc[loc]) acc[loc] = [];
+                acc[loc].push(uc);
+                return acc;
+              }, {})
+            ).map(([location, crops]: [string, any]) => (
+              <div key={location}>
+                <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.2rem", color: "#666b4f", marginBottom: "1rem", borderBottom: "1px solid rgba(85,107,47,0.1)", paddingBottom: "0.5rem" }}>
+                  📍 {location}
+                </h3>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.5rem" }}>
+                  {crops.map((uc: any, i: number) => renderCropCard(uc, `${location}-${i}`))}
                 </div>
               </div>
+            ))}
+          </div>
+        )}
 
-              {/* Card Footer */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-                <div style={{ flex: 1, paddingRight: "2rem" }}>
-                  <div style={{ fontSize: "0.8rem", color: "#2b2e1e", marginBottom: "0.4rem" }}>
-                    Status <br/>
-                    <span style={{ fontWeight: 600 }}>{fieldData.statusText}</span>
-                  </div>
-                  {/* Progress Bar */}
-                  <div style={{ height: "6px", background: "rgba(85,107,47,0.15)", borderRadius: "10px", overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${fieldData.progress}%`, background: "#6b8e23", borderRadius: "10px" }} />
+        {filter === "Seasons" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+            {["KHARIF", "RABI", "ZAID"].map((season) => {
+              const seasonCrops = displayCrops.filter((uc: any) => uc.crop.season?.includes(season));
+              if (seasonCrops.length === 0) return null;
+              
+              const seasonTitles: any = {
+                "KHARIF": "Kharif Season (Monsoon)",
+                "RABI": "Rabi Season (Winter)",
+                "ZAID": "Zaid Season (Summer)",
+              };
+
+              return (
+                <div key={season}>
+                  <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.2rem", color: "#666b4f", marginBottom: "1rem", borderBottom: "1px solid rgba(85,107,47,0.1)", paddingBottom: "0.5rem" }}>
+                    🌦️ {seasonTitles[season]}
+                  </h3>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "1.5rem" }}>
+                    {seasonCrops.map((uc: any, i: number) => renderCropCard(uc, `${season}-${i}`))}
                   </div>
                 </div>
-                
-                <button style={{ 
-                  background: "#6b8e23", color: "white", border: "none", borderRadius: "100px",
-                  padding: "0.6rem 1.2rem", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer",
-                  boxShadow: "0 4px 12px rgba(107,142,35,0.3)"
-                }}>
-                  View Details
-                </button>
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      {/* Add Crop Modal (Unchanged structurally, just theme updated) */}
+      {/* Add Crop Modal */}
       {showModal && (
         <div
           style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}
@@ -268,33 +275,24 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
               <button onClick={() => setShowModal(false)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: "#666b4f" }}>✕</button>
             </div>
 
-            {/* Search */}
             <input
               type="text"
               placeholder={t("Search crops...", "फसल खोजें...")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{
-                width: "100%", padding: "0.7rem 1rem",
-                borderRadius: "10px", border: "1px solid rgba(45,106,79,0.2)",
-                fontSize: "0.9rem", marginBottom: "1rem",
-                outline: "none", color: "#2b2e1e",
-              }}
+              style={{ width: "100%", padding: "0.7rem 1rem", borderRadius: "10px", border: "1px solid rgba(45,106,79,0.2)", fontSize: "0.9rem", marginBottom: "1rem", outline: "none", color: "#2b2e1e" }}
             />
 
-            {/* Crop List */}
             <div style={{ maxHeight: "220px", overflowY: "auto", marginBottom: "1rem" }}>
               {filteredCropsList.map((crop) => (
                 <button
                   key={crop.id}
                   onClick={() => setSelectedCropId(crop.id)}
                   style={{
-                    width: "100%", display: "flex", alignItems: "center", gap: "0.8rem",
-                    padding: "0.7rem", borderRadius: "10px",
+                    width: "100%", display: "flex", alignItems: "center", gap: "0.8rem", padding: "0.7rem", borderRadius: "10px",
                     border: selectedCropId === crop.id ? "2px solid #556b2f" : "1px solid rgba(45,106,79,0.1)",
                     background: selectedCropId === crop.id ? "rgba(85,107,47,0.06)" : "transparent",
-                    cursor: "pointer", marginBottom: "0.3rem", textAlign: "left",
-                    transition: "all 0.15s",
+                    cursor: "pointer", marginBottom: "0.3rem", textAlign: "left", transition: "all 0.15s",
                   }}
                 >
                   <img src={`/crops/${crop.name.toLowerCase()}.png`} style={{ width: "32px", height: "32px", objectFit: "contain" }} onError={(e) => e.currentTarget.style.display = 'none'} />
@@ -306,7 +304,6 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
               ))}
             </div>
 
-            {/* Mandi selector */}
             <div style={{ marginBottom: "1rem" }}>
               <label style={{ fontSize: "0.8rem", fontWeight: 600, color: "#666b4f", display: "block", marginBottom: "0.4rem" }}>
                 {t("Select Mandi (optional)", "मंडी चुनें (वैकल्पिक)")}
