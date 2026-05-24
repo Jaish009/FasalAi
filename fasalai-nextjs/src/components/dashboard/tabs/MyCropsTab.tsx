@@ -16,6 +16,7 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
   const t = (en: string, hi: string) => (lang === "hi" ? hi : en);
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+  const [detailsCrop, setDetailsCrop] = useState<any>(null);
   const [selectedCropId, setSelectedCropId] = useState("");
   const [selectedMandiId, setSelectedMandiId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -133,7 +134,10 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
               <div style={{ height: "100%", width: `${fieldData.progress}%`, background: "#6b8e23", borderRadius: "10px" }} />
             </div>
           </div>
-          <button style={{ background: "#6b8e23", color: "white", border: "none", borderRadius: "100px", padding: "0.6rem 1.2rem", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", boxShadow: "0 4px 12px rgba(107,142,35,0.3)" }}>
+          <button 
+            onClick={() => setDetailsCrop({ ...uc, fieldData })}
+            style={{ background: "#6b8e23", color: "white", border: "none", borderRadius: "100px", padding: "0.6rem 1.2rem", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", boxShadow: "0 4px 12px rgba(107,142,35,0.3)" }}
+          >
             View Details
           </button>
         </div>
@@ -333,6 +337,59 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
             >
               {loading ? "..." : t("Add to My Crops", "मेरी फसलों में जोड़ें")}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Crop Details Modal */}
+      {detailsCrop && (
+        <div
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}
+          onClick={(e) => e.target === e.currentTarget && setDetailsCrop(null)}
+        >
+          <div style={{ background: "#fdfbf7", borderRadius: "24px", width: "100%", maxWidth: "600px", boxShadow: "0 32px 84px rgba(0,0,0,0.3)", overflow: "hidden" }}>
+            {/* Modal Header/Hero */}
+            <div style={{ background: "linear-gradient(135deg, rgba(139,168,74,0.2) 0%, rgba(85,107,47,0.05) 100%)", padding: "2.5rem 2rem", position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <div style={{ color: "#556b2f", fontWeight: 700, fontSize: "0.9rem", marginBottom: "0.5rem", letterSpacing: "1px", textTransform: "uppercase" }}>{detailsCrop.fieldData.location}</div>
+                <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "2.5rem", fontWeight: 800, color: "#1b2d1e", margin: 0 }}>
+                  {t(detailsCrop.crop.name, detailsCrop.crop.nameHindi)}
+                </h2>
+              </div>
+              <img 
+                src={`/crops/${detailsCrop.crop.name.toLowerCase()}.png`} 
+                alt={detailsCrop.crop.name} 
+                style={{ width: "120px", height: "120px", objectFit: "contain", filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.2))", transform: "scale(1.2) rotate(-5deg)" }} 
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+              <button onClick={() => setDetailsCrop(null)} style={{ position: "absolute", top: "1.5rem", right: "1.5rem", background: "white", border: "none", borderRadius: "50%", width: "36px", height: "36px", cursor: "pointer", fontSize: "1.2rem", color: "#666b4f", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>✕</button>
+            </div>
+
+            {/* Modal Body */}
+            <div style={{ padding: "2rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "2rem" }}>
+                <div style={{ background: "white", padding: "1.2rem", borderRadius: "16px", border: "1px solid rgba(85,107,47,0.1)" }}>
+                  <div style={{ fontSize: "0.85rem", color: "#666b4f", marginBottom: "0.3rem" }}>💧 Soil Moisture</div>
+                  <div style={{ fontSize: "1.4rem", fontWeight: 700, color: "#1b2d1e" }}>42% (Optimal)</div>
+                </div>
+                <div style={{ background: "white", padding: "1.2rem", borderRadius: "16px", border: "1px solid rgba(85,107,47,0.1)" }}>
+                  <div style={{ fontSize: "0.85rem", color: "#666b4f", marginBottom: "0.3rem" }}>🌡️ Temperature</div>
+                  <div style={{ fontSize: "1.4rem", fontWeight: 700, color: "#1b2d1e" }}>28°C</div>
+                </div>
+                <div style={{ background: "white", padding: "1.2rem", borderRadius: "16px", border: "1px solid rgba(85,107,47,0.1)" }}>
+                  <div style={{ fontSize: "0.85rem", color: "#666b4f", marginBottom: "0.3rem" }}>🦠 Disease Risk</div>
+                  <div style={{ fontSize: "1.4rem", fontWeight: 700, color: "#2b2e1e" }}>Low (5%)</div>
+                </div>
+                <div style={{ background: "white", padding: "1.2rem", borderRadius: "16px", border: "1px solid rgba(85,107,47,0.1)" }}>
+                  <div style={{ fontSize: "0.85rem", color: "#666b4f", marginBottom: "0.3rem" }}>📅 Next Irrigation</div>
+                  <div style={{ fontSize: "1.4rem", fontWeight: 700, color: "#1b2d1e" }}>In 3 Days</div>
+                </div>
+              </div>
+
+              <button style={{ width: "100%", background: "#1b2d1e", color: "white", border: "none", borderRadius: "12px", padding: "1rem", fontSize: "1rem", fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}>
+                Generate AI Insights
+              </button>
+            </div>
           </div>
         </div>
       )}
