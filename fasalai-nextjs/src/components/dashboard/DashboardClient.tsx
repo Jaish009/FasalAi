@@ -36,7 +36,7 @@ export default function DashboardClient({ user, latestPrices, allCrops, allMandi
   const t = (en: string, hi: string) => (lang === "hi" ? hi : en);
 
   return (
-    <div className="flex h-screen bg-cream overflow-hidden">
+    <div style={{ display: "flex", height: "100vh", backgroundColor: "var(--color-cream)", overflow: "hidden" }}>
       {/* Sidebar */}
       <Sidebar
         activeTab={activeTab}
@@ -47,7 +47,7 @@ export default function DashboardClient({ user, latestPrices, allCrops, allMandi
       />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
         {/* Top Bar */}
         <header
           style={{
