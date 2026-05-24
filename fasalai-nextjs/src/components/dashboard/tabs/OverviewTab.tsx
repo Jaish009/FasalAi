@@ -147,7 +147,6 @@ export default function OverviewTab({ user, latestPrices, lang, setActiveTab }: 
 
       {/* Price Table */}
       <div
-        style={{
         className="premium-card"
         style={{ padding: "1.5rem", marginBottom: "1.5rem" }}
       >
