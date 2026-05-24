@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: NextRequest) {
   try {
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest) {
       }
     });
 
+    revalidatePath("/dashboard");
     return NextResponse.json(userCrop);
   } catch (error) {
     console.error("POST /api/crops/my error:", error);
@@ -77,6 +79,7 @@ export async function DELETE(req: NextRequest) {
       where: { id },
     });
 
+    revalidatePath("/dashboard");
     return new NextResponse("Deleted", { status: 200 });
   } catch (error) {
     console.error("DELETE /api/crops/my error:", error);
