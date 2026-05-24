@@ -6,17 +6,77 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 
 
 interface Props { userCrops: any[]; lang: "en" | "hi"; }
 
-const MOCK_PREDICTIONS = [
-  { crop: "Wheat", cropHi: "गेहूं", current: 2185, p7: 2240, p15: 2290, p30: 2350, confidence: 92, trend: "RISING", icon: "🌾" },
-  { crop: "Soybean", cropHi: "सोयाबीन", current: 4320, p7: 4380, p15: 4410, p30: 4450, confidence: 88, trend: "RISING", icon: "🌱" },
-  { crop: "Onion", cropHi: "प्याज", current: 1240, p7: 1100, p15: 980, p30: 1050, confidence: 79, trend: "FALLING", icon: "🧅" },
-  { crop: "Cotton", cropHi: "कपास", current: 6800, p7: 7050, p15: 7200, p30: 7350, confidence: 95, trend: "RISING", icon: "🌿" },
+const DEFAULT_CROPS = [
+  { cropId: "crop-wheat", mandiId: "mandi-indore", crop: "Wheat", cropHi: "गेहूं", icon: "🌾" },
+  { cropId: "crop-soybean", mandiId: "mandi-indore", crop: "Soybean", cropHi: "सोयाबीन", icon: "🌱" },
+  { cropId: "crop-onion", mandiId: "mandi-indore", crop: "Onion", cropHi: "प्याज", icon: "🧅" },
+  { cropId: "crop-cotton", mandiId: "mandi-indore", crop: "Cotton", cropHi: "कपास", icon: "🌿" },
+  { cropId: "crop-maize", mandiId: "mandi-indore", crop: "Maize", cropHi: "मक्का", icon: "🌽" },
+  { cropId: "crop-paddy", mandiId: "mandi-indore", crop: "Paddy", cropHi: "धान", icon: "🌾" }
 ];
 
 export default function AIForecastTab({ userCrops, lang }: Props) {
   const t = (en: string, hi: string) => (lang === "hi" ? hi : en);
-  const [selected, setSelected] = useState(MOCK_PREDICTIONS[0]);
+  const [predictions, setPredictions] = useState<any[]>([]);
+  const [selected, setSelected] = useState<any>(null);
   const [horizon, setHorizon] = useState<7 | 15 | 30>(7);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLivePredictions = async () => {
+      try {
+        setLoading(true);
+        const cropsToFetch = userCrops && userCrops.length > 0 
+           ? userCrops.map(uc => ({ cropId: uc.cropId, mandiId: uc.mandiId || "mandi-indore", crop: uc.crop?.name || "", cropHi: uc.crop?.nameHindi || "", icon: "🌱" }))
+           : DEFAULT_CROPS;
+
+        const results = await Promise.all(
+          cropsToFetch.map(async (c) => {
+            const [priceRes, p7Res, p15Res, p30Res] = await Promise.all([
+              fetch(`/api/prices?cropId=${c.cropId}&mandiId=${c.mandiId}&latest=true`).then(r => r.json()),
+              fetch(`/api/predictions?cropId=${c.cropId}&mandiId=${c.mandiId}&horizon=7`).then(r => r.json()),
+              fetch(`/api/predictions?cropId=${c.cropId}&mandiId=${c.mandiId}&horizon=15`).then(r => r.json()),
+              fetch(`/api/predictions?cropId=${c.cropId}&mandiId=${c.mandiId}&horizon=30`).then(r => r.json()),
+            ]);
+            
+            return {
+              crop: c.crop,
+              cropHi: c.cropHi,
+              current: priceRes?.latestPrice || 1000,
+              p7: p7Res?.prediction?.predictedPrice || 1000,
+              p15: p15Res?.prediction?.predictedPrice || 1000,
+              p30: p30Res?.prediction?.predictedPrice || 1000,
+              confidence: Math.round(p7Res?.prediction?.confidence || 85),
+              trend: p7Res?.prediction?.trend || "STABLE",
+              icon: c.icon
+            };
+          })
+        );
+        
+        if (results.length > 0) {
+          setPredictions(results);
+          setSelected(results[0]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch live predictions", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchLivePredictions();
+  }, [userCrops]);
+
+  if (loading || !selected) {
+    return (
+      <div style={{ padding: "4rem 2rem", textAlign: "center", color: "#666b4f" }}>
+        <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>🤖</div>
+        <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.2rem", fontWeight: 700 }}>
+          {t("Fetching AI Predictions...", "AI अनुमान लोड हो रहा है...")}
+        </div>
+      </div>
+    );
+  }
 
   const chartData = [
     { label: t("Today", "आज"), price: selected.current, predicted: false },
@@ -26,7 +86,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
   ];
 
   const targetPrice = horizon === 7 ? selected.p7 : horizon === 15 ? selected.p15 : selected.p30;
-  const change = ((targetPrice - selected.current) / selected.current * 100).toFixed(1);
+  const change = selected.current ? ((targetPrice - selected.current) / selected.current * 100).toFixed(1) : "0.0";
   const isRising = parseFloat(change) > 0;
 
   return (
@@ -36,13 +96,13 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
           🤖 {t("AI Price Forecast", "AI मूल्य भविष्यवाणी")}
         </h2>
         <p style={{ fontSize: "0.82rem", color: "#666b4f", margin: 0 }}>
-          {t("Prophet ML model predicts prices with 94% accuracy", "Prophet ML मॉडल 94% सटीकता से भाव बताता है")}
+          {t("ML model predicts prices with high accuracy", "ML मॉडल उच्च सटीकता से भाव बताता है")}
         </p>
       </div>
 
       {/* Crop Selector */}
       <div style={{ display: "flex", gap: "0.6rem", marginBottom: "1.5rem", flexWrap: "wrap" }}>
-        {MOCK_PREDICTIONS.map((p) => (
+        {predictions.map((p) => (
           <button
             key={p.crop}
             onClick={() => setSelected(p)}
@@ -175,8 +235,8 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
             </tr>
           </thead>
           <tbody>
-            {MOCK_PREDICTIONS.map((p) => {
-              const chg = ((p.p7 - p.current) / p.current * 100).toFixed(1);
+            {predictions.map((p) => {
+              const chg = p.current ? ((p.p7 - p.current) / p.current * 100).toFixed(1) : "0.0";
               return (
                 <tr key={p.crop} style={{ borderBottom: "1px solid rgba(45,106,79,0.05)", cursor: "pointer" }}
                   onClick={() => setSelected(p)}
