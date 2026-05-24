@@ -23,6 +23,8 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All Crops");
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
+  const [insightLoading, setInsightLoading] = useState(false);
+  const [insightData, setInsightData] = useState<string | null>(null);
 
   // Mock Field Data for the new UI aesthetic
   const MOCK_FIELD_DATA: Record<string, any> = {
@@ -117,7 +119,13 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
                 />
                 <div style={{ position: "absolute", top: "100%", right: 0, background: "white", borderRadius: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.15)", padding: "0.5rem", zIndex: 10, minWidth: "120px" }}>
                   <button 
-                    onClick={(e) => { e.stopPropagation(); setMenuOpenId(null); setDetailsCrop({ ...uc, fieldData }); }}
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      setMenuOpenId(null); 
+                      setInsightData(null);
+                      setInsightLoading(false);
+                      setDetailsCrop({ ...uc, fieldData }); 
+                    }}
                     style={{ width: "100%", textAlign: "left", padding: "0.5rem 1rem", border: "none", background: "none", cursor: "pointer", fontSize: "0.85rem", color: "#2b2e1e", borderRadius: "4px" }}
                     onMouseEnter={(e) => e.currentTarget.style.background = "#f0f0f0"}
                     onMouseLeave={(e) => e.currentTarget.style.background = "none"}
@@ -174,7 +182,11 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
             </div>
           </div>
           <button 
-            onClick={() => setDetailsCrop({ ...uc, fieldData })}
+            onClick={() => {
+              setInsightData(null);
+              setInsightLoading(false);
+              setDetailsCrop({ ...uc, fieldData });
+            }}
             style={{ background: "#6b8e23", color: "white", border: "none", borderRadius: "100px", padding: "0.6rem 1.2rem", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", boxShadow: "0 4px 12px rgba(107,142,35,0.3)" }}
           >
             View Details
@@ -182,6 +194,20 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
         </div>
       </div>
     );
+  };
+
+  const handleGenerateInsight = () => {
+    setInsightLoading(true);
+    setTimeout(() => {
+      const insights = [
+        t("Based on the current weather and soil moisture, your crop is growing optimally. Consider applying a light fertilizer in 5 days.", "वर्तमान मौसम और मिट्टी की नमी के आधार पर, आपकी फसल अच्छी तरह से बढ़ रही है। 5 दिनों में हल्का उर्वरक डालने पर विचार करें।"),
+        t("Disease risk is currently low. Keep monitoring for pests as temperatures rise next week.", "रोग का जोखिम वर्तमान में कम है। अगले सप्ताह तापमान बढ़ने पर कीटों पर नज़र रखें।"),
+        t("Harvest is expected to be slightly delayed due to recent rainfall. Ensure proper drainage.", "हाल ही में हुई बारिश के कारण कटाई में थोड़ी देरी होने की उम्मीद है। खेत में उचित जल निकासी सुनिश्चित करें।"),
+        t("Market prices are trending upwards for this season. You might get a better yield price if you hold for 2 weeks.", "इस सीज़न में बाजार मूल्य ऊपर की ओर बढ़ रहे हैं। यदि आप 2 सप्ताह तक रुकते हैं तो आपको बेहतर कीमत मिल सकती है।")
+      ];
+      setInsightData(insights[Math.floor(Math.random() * insights.length)]);
+      setInsightLoading(false);
+    }, 1500);
   };
 
   return (
@@ -425,9 +451,27 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
                 </div>
               </div>
 
-              <button style={{ width: "100%", background: "#1b2d1e", color: "white", border: "none", borderRadius: "12px", padding: "1rem", fontSize: "1rem", fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}>
-                Generate AI Insights
-              </button>
+              {insightData ? (
+                <div style={{ background: "rgba(107,142,35,0.1)", border: "1px solid rgba(107,142,35,0.2)", borderRadius: "12px", padding: "1.5rem", display: "flex", gap: "1rem" }}>
+                  <div style={{ fontSize: "2rem" }}>🤖</div>
+                  <div>
+                    <h4 style={{ margin: "0 0 0.5rem", color: "#2b2e1e", fontFamily: "Syne, sans-serif", fontSize: "1.1rem" }}>
+                      {t("AI Crop Insight", "AI फसल विश्लेषण")}
+                    </h4>
+                    <p style={{ margin: 0, color: "#4a6741", fontSize: "0.95rem", lineHeight: "1.5" }}>
+                      {insightData}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <button 
+                  onClick={handleGenerateInsight}
+                  disabled={insightLoading}
+                  style={{ width: "100%", background: "#1b2d1e", color: "white", border: "none", borderRadius: "12px", padding: "1rem", fontSize: "1rem", fontWeight: 600, cursor: insightLoading ? "not-allowed" : "pointer", transition: "all 0.2s", opacity: insightLoading ? 0.7 : 1 }}
+                >
+                  {insightLoading ? t("Analyzing data...", "डेटा का विश्लेषण किया जा रहा है...") : t("Generate AI Insights", "AI विश्लेषण प्राप्त करें")}
+                </button>
+              )}
             </div>
           </div>
         </div>
