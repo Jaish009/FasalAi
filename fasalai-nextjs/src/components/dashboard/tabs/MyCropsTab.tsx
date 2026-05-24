@@ -71,7 +71,7 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
   );
 
   return (
-    <div style={{ maxWidth: "900px" }}>
+    <div style={{ maxWidth: "100%" }}>
       {/* Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
         <div>

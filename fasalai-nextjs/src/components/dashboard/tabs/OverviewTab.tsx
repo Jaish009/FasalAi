@@ -66,7 +66,7 @@ export default function OverviewTab({ user, latestPrices, lang, setActiveTab }: 
   ];
 
   return (
-    <div style={{ maxWidth: "1000px" }}>
+    <div style={{ maxWidth: "100%" }}>
       {/* Stats Grid */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "1.5rem" }}>
         {STAT_CARDS.map((card) => (

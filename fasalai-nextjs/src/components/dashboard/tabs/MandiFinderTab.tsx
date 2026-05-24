@@ -27,7 +27,7 @@ export default function MandiFinderTab({ allMandis, lang }: Props) {
   );
 
   return (
-    <div style={{ maxWidth: "900px" }}>
+    <div style={{ maxWidth: "100%" }}>
       <div style={{ marginBottom: "1.5rem" }}>
         <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#1b2d1e", margin: "0 0 0.3rem" }}>
           🏪 {t("Mandi Finder", "मंडी खोजें")}

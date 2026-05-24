@@ -30,7 +30,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
   const isRising = parseFloat(change) > 0;
 
   return (
-    <div style={{ maxWidth: "900px" }}>
+    <div style={{ maxWidth: "100%" }}>
       <div style={{ marginBottom: "1.5rem" }}>
         <h2 style={{ fontFamily: "Syne, sans-serif", fontSize: "1.3rem", fontWeight: 800, color: "#1b2d1e", margin: "0 0 0.3rem" }}>
           🤖 {t("AI Price Forecast", "AI मूल्य भविष्यवाणी")}
