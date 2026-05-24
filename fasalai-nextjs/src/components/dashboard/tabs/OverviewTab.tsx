@@ -179,7 +179,10 @@ export default function OverviewTab({ user, latestPrices, lang, setActiveTab }: 
                 onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
               >
                 <td style={{ padding: "0.7rem 0.8rem", color: "#2b2e1e", fontWeight: 500 }}>
-                  {t(row.crop, row.cropHi)}
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <img src={`/crops/${row.crop.toLowerCase()}.png`} alt={row.crop} style={{ width: "20px", height: "20px", objectFit: "contain" }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                    {t(row.crop, row.cropHi)}
+                  </div>
                 </td>
                 <td style={{ padding: "0.7rem 0.8rem", color: "#666b4f" }}>{row.mandi}</td>
                 <td style={{ padding: "0.7rem 0.8rem", fontFamily: "Syne, sans-serif", fontWeight: 700, color: "#556b2f" }}>

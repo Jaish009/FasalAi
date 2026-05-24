@@ -55,7 +55,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
               display: "flex", alignItems: "center", gap: "0.4rem",
             }}
           >
-            {p.icon} {t(p.crop, p.cropHi)}
+            <img src={`/crops/${p.crop.toLowerCase()}.png`} alt={p.crop} style={{ width: "20px", height: "20px", objectFit: "contain" }} onError={(e) => { e.currentTarget.style.display = 'none'; }} /> {t(p.crop, p.cropHi)}
           </button>
         ))}
       </div>
@@ -66,7 +66,7 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
         marginBottom: "1.5rem", color: "white", position: "relative", overflow: "hidden",
       }}>
         <div style={{ position: "absolute", right: "-1rem", top: "-1rem", fontSize: "8rem", opacity: 0.06 }}>
-          {selected.icon}
+          <img src={`/crops/${selected.crop.toLowerCase()}.png`} alt={selected.crop} style={{ width: "240px", height: "240px", objectFit: "contain", opacity: 0.15, filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.5))" }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.5rem", position: "relative", zIndex: 1 }}>
@@ -183,7 +183,12 @@ export default function AIForecastTab({ userCrops, lang }: Props) {
                   onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(45,106,79,0.03)")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                 >
-                  <td style={{ padding: "0.65rem 0.6rem", fontWeight: 600, color: "#2b2e1e" }}>{p.icon} {t(p.crop, p.cropHi)}</td>
+                  <td style={{ padding: "0.65rem 0.6rem", fontWeight: 600, color: "#2b2e1e" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                      <img src={`/crops/${p.crop.toLowerCase()}.png`} alt={p.crop} style={{ width: "24px", height: "24px", objectFit: "contain" }} onError={(e) => { e.currentTarget.style.display = 'none'; }} /> 
+                      {t(p.crop, p.cropHi)}
+                    </div>
+                  </td>
                   <td style={{ padding: "0.65rem 0.6rem", color: "#556b2f", fontWeight: 700 }}>₹{p.current.toLocaleString("en-IN")}</td>
                   <td style={{ padding: "0.65rem 0.6rem", color: "#8fbc8f", fontWeight: 600 }}>₹{p.p7.toLocaleString("en-IN")}</td>
                   <td style={{ padding: "0.65rem 0.6rem", color: "#8fbc8f", fontWeight: 600 }}>₹{p.p15.toLocaleString("en-IN")}</td>

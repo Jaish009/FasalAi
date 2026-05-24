@@ -117,12 +117,20 @@ export default function MyCropsTab({ user, allCrops, allMandis, lang }: Props) {
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.8rem" }}>
-                <div>
-                  <div style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#666b4f" }}>
-                    {CATEGORY_ICONS[uc.crop.category]} {uc.crop.category}
-                  </div>
-                  <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "#2b2e1e", marginTop: "0.2rem" }}>
-                    {t(uc.crop.name, uc.crop.nameHindi)}
+                <div style={{ display: "flex", gap: "0.8rem", alignItems: "center" }}>
+                  <img 
+                    src={`/crops/${uc.crop.name.toLowerCase()}.png`} 
+                    alt={uc.crop.name} 
+                    style={{ width: "42px", height: "42px", objectFit: "contain", filter: "drop-shadow(0 4px 6px rgba(85,107,47,0.15))" }} 
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  />
+                  <div>
+                    <div style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "#666b4f" }}>
+                      {uc.crop.category}
+                    </div>
+                    <div style={{ fontFamily: "Syne, sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "#2b2e1e", marginTop: "0.2rem" }}>
+                      {t(uc.crop.name, uc.crop.nameHindi)}
+                    </div>
                   </div>
                 </div>
                 <button
