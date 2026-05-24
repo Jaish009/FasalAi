@@ -130,6 +130,78 @@ async function main() {
         unit: "quintal",
       },
     }),
+    prisma.crop.upsert({
+      where: { id: "crop-potato" },
+      update: {},
+      create: {
+        id: "crop-potato",
+        name: "Potato",
+        nameHindi: "आलू",
+        category: CropCategory.VEGETABLE,
+        season: [Season.RABI],
+        unit: "quintal",
+      },
+    }),
+    prisma.crop.upsert({
+      where: { id: "crop-sugarcane" },
+      update: {},
+      create: {
+        id: "crop-sugarcane",
+        name: "Sugarcane",
+        nameHindi: "गन्ना",
+        category: CropCategory.OTHER,
+        season: [Season.KHARIF, Season.RABI],
+        unit: "quintal",
+      },
+    }),
+    prisma.crop.upsert({
+      where: { id: "crop-cabbage" },
+      update: {},
+      create: {
+        id: "crop-cabbage",
+        name: "Cabbage",
+        nameHindi: "पत्ता गोभी",
+        category: CropCategory.VEGETABLE,
+        season: [Season.RABI],
+        unit: "quintal",
+      },
+    }),
+    prisma.crop.upsert({
+      where: { id: "crop-cauliflower" },
+      update: {},
+      create: {
+        id: "crop-cauliflower",
+        name: "Cauliflower",
+        nameHindi: "फूल गोभी",
+        category: CropCategory.VEGETABLE,
+        season: [Season.RABI],
+        unit: "quintal",
+      },
+    }),
+    prisma.crop.upsert({
+      where: { id: "crop-brinjal" },
+      update: {},
+      create: {
+        id: "crop-brinjal",
+        name: "Brinjal",
+        nameHindi: "बैंगन",
+        category: CropCategory.VEGETABLE,
+        season: [Season.KHARIF, Season.RABI],
+        unit: "quintal",
+      },
+    }),
+    prisma.crop.upsert({
+      where: { id: "crop-chilli" },
+      update: {},
+      create: {
+        id: "crop-chilli",
+        name: "Chilli",
+        nameHindi: "मिर्च",
+        category: CropCategory.SPICE,
+        season: [Season.KHARIF, Season.RABI],
+        unit: "quintal",
+      },
+    }),
   ]);
 
   console.log(`✅ ${crops.length} crops seeded`);
