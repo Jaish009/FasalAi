@@ -1,5 +1,5 @@
-/* src/app/globals.css */
 @import "tailwindcss";
+@source "../components";
 
 @theme {
   --color-cream: #fefae0;

@@ -28,12 +28,16 @@ export const metadata: Metadata = {
   },
 };
 
+import { ThemeProvider } from "@/components/ThemeProvider";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
-      <html lang="hi" className={`${dmSans.variable} ${syne.variable}`}>
+      <html lang="hi" className={`${dmSans.variable} ${syne.variable}`} suppressHydrationWarning>
         <body className="font-sans antialiased bg-cream text-forest">
-          {children}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
