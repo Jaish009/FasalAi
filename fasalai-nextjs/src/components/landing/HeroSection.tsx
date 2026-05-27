@@ -15,7 +15,7 @@ const topPositions = [15, 45, 25, 55, 35];
 
 export function HeroSection() {
   return (
-    <section className="relative w-full h-screen bg-[#d3dbbd] flex flex-col justify-center items-center overflow-hidden pt-20 pb-10">
+    <section className="relative w-full h-screen bg-[#d3dbbd] dark:bg-gray-900 transition-colors duration-300 flex flex-col justify-center items-center overflow-hidden pt-20 pb-10">
       {/* Background Circular Images (Floating) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {images.map((src, i) => (
@@ -24,7 +24,7 @@ export function HeroSection() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, delay: i * 0.2 }}
-            className={`absolute rounded-full overflow-hidden shadow-2xl`}
+            className={`absolute rounded-full overflow-hidden shadow-2xl dark:opacity-60`}
             style={{
               width: i % 2 === 0 ? "300px" : "200px",
               height: i % 2 === 0 ? "300px" : "200px",
@@ -48,7 +48,7 @@ export function HeroSection() {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-6xl md:text-8xl font-bold tracking-tight text-[#2d3a24] mb-6 drop-shadow-lg"
+          className="text-6xl md:text-8xl font-bold tracking-tight text-[#2d3a24] dark:text-white mb-6 drop-shadow-lg transition-colors"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           Empowering Farmers <br /> with AI Insights
@@ -58,7 +58,7 @@ export function HeroSection() {
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="text-lg md:text-2xl text-[#3b4c30] max-w-2xl bg-white/40 backdrop-blur-md px-6 py-3 rounded-full font-medium mb-8"
+          className="text-lg md:text-2xl text-[#3b4c30] dark:text-gray-100 max-w-2xl bg-white/40 dark:bg-black/50 backdrop-blur-md px-6 py-3 rounded-full font-medium mb-8 transition-colors"
         >
           Smart Crop Analysis, Real-Time Mandi Prices, & Data-Driven Decisions.
         </motion.p>

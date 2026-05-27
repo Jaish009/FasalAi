@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @source "../components";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme {
   --color-cream: #fefae0;
   --color-cream-dark: #f5f0d8;
@@ -37,6 +39,13 @@ body {
     radial-gradient(at 0% 100%, hsla(43,40%,94%,1) 0px, transparent 50%);
   background-attachment: fixed;
   color: var(--color-forest);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark body {
+  background-color: #111827; /* gray-900 */
+  background-image: none;
+  color: #fdfbf7;
 }
 
 /* Premium Glass & Shadow Utilities */
