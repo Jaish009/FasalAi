@@ -4,6 +4,7 @@ import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export function Header() {
@@ -17,7 +18,8 @@ export function Header() {
 
   return (
     <header className="fixed top-0 w-full z-50 px-6 py-4 flex items-center justify-between bg-white/50 dark:bg-black/50 backdrop-blur-md">
-      <Link href="/" className="text-2xl font-bold tracking-tight dark:text-white text-forest">
+      <Link href="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight dark:text-white text-forest">
+        <Image src="/logo.png" alt="Fasal AI Logo" width={32} height={32} className="object-contain rounded-md" />
         Fasal<span className="text-green-600">AI</span>
       </Link>
       

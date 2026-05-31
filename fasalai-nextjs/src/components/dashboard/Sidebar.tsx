@@ -3,6 +3,8 @@
 
 import type { Tab } from "./DashboardClient";
 
+import Image from "next/image";
+
 interface Props {
   activeTab: Tab;
   setActiveTab: (tab: Tab) => void;
@@ -65,7 +67,8 @@ export default function Sidebar({ activeTab, setActiveTab, lang, open, onClose }
             gap: "0.4rem",
           }}
         >
-          🌾 Fasal<span style={{ color: "#f4a261" }}>AI</span>
+          <Image src="/logo.png" alt="Fasal AI" width={28} height={28} className="object-contain rounded-md" />
+          Fasal<span style={{ color: "#f4a261" }}>AI</span>
         </div>
 
         {/* Nav */}
